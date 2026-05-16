@@ -1,5 +1,10 @@
 package edu.curso.model;
 
-public class Publicadora {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Publicadora extends Estudio {
     
+        private List<Jogo> portifolio = new ArrayList<>();
+
 }
