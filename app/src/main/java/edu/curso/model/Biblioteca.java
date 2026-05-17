@@ -1,14 +1,34 @@
-package edu.curso.model;
+private List<JogoAdquirido> jogosA = new ArrayList<>();
 
-import java.util.ArrayList;
-import java.util.List;
+    public Biblioteca() {
+    }
 
-public class Biblioteca {
+    public Biblioteca(List<JogoAdquirido> jogosA) {
+        this.jogosA = jogosA;
+    }
 
-    private List<JogoAdquirido> jogosA = new ArrayList<>();
+    public List<JogoAdquirido> getJogosA() {
+        return jogosA;
+    }
+
+    public void setJogosA(List<JogoAdquirido> jogosA) {
+        this.jogosA = jogosA;
+    }
+
+    public void adicionarJogo(JogoAdquirido jogoAdquirido) {
+        this.jogosA.add(jogoAdquirido);
+    }
 
     public void exibirBiblioteca() {
+        if (jogosA.isEmpty()) {
+            System.out.println("Biblioteca vazia.");
+            return;
+        }
 
+        for (JogoAdquirido jogoAdquirido : jogosA) {
+            String nomeJogo = jogoAdquirido.getJogo() != null ? jogoAdquirido.getJogo().getNome() : "Indisponível";
+            System.out.println("Jogo: " + nomeJogo + " | Data de aquisição: " + jogoAdquirido.getDataAquisicao());
+        }
     }
 
 }
