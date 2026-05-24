@@ -1,5 +1,7 @@
 package edu.curso.control;
 
+import edu.curso.model.Jogo;
+
 public class PublicarUC {
 
     public void publicarJogo() {
@@ -12,6 +14,18 @@ public class PublicarUC {
 
     public void alterarJogo() {
         
+    }
+
+    public Jogo toEntityJogo() {
+
+        Jogo jogo = new Jogo();
+
+        jogo.setNome(jogo.getNome());
+        jogo.setPreco(jogo.getPreco());
+        jogo.setEspacoArmazenamento(jogo.getEspacoArmazenamento());
+        jogo.setDescricaoJogo(jogo.getDescricaoJogo());
+
+        return jogo;
     }
 
 }
