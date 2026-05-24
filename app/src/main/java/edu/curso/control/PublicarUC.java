@@ -18,7 +18,7 @@ public class PublicarUC {
 
     public Jogo toEntityJogo() {
 
-        Jogo jogo = new Jogo();
+        Jogo jogo = new Jogo(null, null, 0, 0, null, null, false, null, null);
 
         jogo.setNome(jogo.getNome());
         jogo.setPreco(jogo.getPreco());

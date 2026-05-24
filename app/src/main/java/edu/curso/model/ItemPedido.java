@@ -5,9 +5,6 @@ public class ItemPedido {
     private int quantidade;
     private double precoUni;
 
-    public ItemPedido() {
-    }
-
     public ItemPedido(int quantidade, double precoUni) {
         this.quantidade = quantidade;
         this.precoUni = precoUni;

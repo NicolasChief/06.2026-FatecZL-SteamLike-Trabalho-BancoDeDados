@@ -7,9 +7,6 @@ public class Pesquisa {
 
     private List<Jogo> campoBusca = new ArrayList<>();
 
-    public Pesquisa() {
-    }
-
     public Pesquisa(List<Jogo> campoBusca) {
         this.campoBusca = campoBusca;
     }

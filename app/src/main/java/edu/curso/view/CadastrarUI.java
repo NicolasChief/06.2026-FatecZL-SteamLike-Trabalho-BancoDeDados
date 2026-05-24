@@ -20,9 +20,9 @@ public class CadastrarUI extends Application {
 
     private Label tNome = new Label("Usuário: ");
     private Label tSenha = new Label("Senha: ");
+    private Label tCadastrar = new Label("Primeira Vez?");
 
     private Button bEntrar = new Button("Acessar");
-    private Button bCadastrar = new Button("Primeira Vez?");
 
     public void start(Stage stage){
 
@@ -39,8 +39,10 @@ public class CadastrarUI extends Application {
         hbS.setAlignment(Pos.CENTER);
 
         HBox hbO = new HBox(40);
+        hbO.setAlignment(Pos.CENTER);
 
         VBox vb = new VBox(20);
+        vb.setAlignment(Pos.CENTER);
         
         Scene sc = new Scene(gp, 1520, 780);
 
@@ -49,12 +51,12 @@ public class CadastrarUI extends Application {
         fSenha.setPrefSize(500, 50);
 
         bEntrar.setPrefSize(250, 50);
-        bCadastrar.setPrefSize(250, 50);
+        tCadastrar.setPrefSize(250, 50);
 
         // Adiciona ao Pane
         hbN.getChildren().addAll(tNome, fNome);
         hbS.getChildren().addAll(tSenha, fSenha);
-        hbO.getChildren().addAll(bEntrar, bCadastrar);
+        hbO.getChildren().addAll(bEntrar, tCadastrar);
 
         vb.getChildren().addAll(hbN, hbS, hbO);
 

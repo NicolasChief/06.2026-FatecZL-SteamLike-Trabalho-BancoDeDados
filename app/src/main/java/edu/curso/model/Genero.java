@@ -4,9 +4,6 @@ public class Genero {
 
     private String generoJogo;
 
-    public Genero() {
-    }
-
     public Genero(String generoJogo) {
         this.generoJogo = generoJogo;
     }

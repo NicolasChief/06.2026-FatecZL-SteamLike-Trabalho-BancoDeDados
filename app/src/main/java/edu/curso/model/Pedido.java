@@ -9,9 +9,6 @@ public class Pedido {
     private double valorTotal;
     private List<ItemPedido> itens = new ArrayList<>();
 
-    public Pedido() {
-    }
-
     public Pedido(String statusPedido) {
         this.statusPedido = statusPedido;
     }

@@ -14,9 +14,6 @@ public class Jogo {
     private String publicadora;
     private String desenvolvedora;
 
-    public Jogo() {
-    }
-
     public Jogo(String nome, Date dataLancamento, double preco, double espacoArmazenamento,
             String descricaoJogo, String descricaoSpecs, boolean statusAquicicao, String publicadora,
             String desenvolvedora) {

@@ -11,9 +11,6 @@ public class Usuario {
     private String telefone;
     private double saldoConta;
 
-    public Usuario() {
-    }
-
     public Usuario(String nome, Date dataNasc, String email, String senha, String telefone, double saldoConta) {
         this.nome = nome;
         this.dataNasc = dataNasc;

@@ -7,9 +7,6 @@ public class JogoAdquirido {
     private Date dataAquisicao;
     private Jogo jogo; 
 
-    public JogoAdquirido() {
-    }
-
     public JogoAdquirido(Date dataAquisicao, Jogo jogo) {
         this.dataAquisicao = dataAquisicao;
         this.jogo = jogo;
