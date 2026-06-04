@@ -31,7 +31,7 @@ public class Jogo {
     public String getNome() {
         return nome;
     }
-    public String setNome(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
 

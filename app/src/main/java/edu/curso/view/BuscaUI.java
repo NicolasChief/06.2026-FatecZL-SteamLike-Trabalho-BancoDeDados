@@ -36,8 +36,6 @@ public class BuscaUI extends Application {
         // Elementos Pane e Scene
         Jogo jogo = new Jogo(STYLESHEET_CASPIAN, null, 0, 0, STYLESHEET_CASPIAN, STYLESHEET_CASPIAN, false, STYLESHEET_MODENA, STYLESHEET_CASPIAN);
 
-        GridPane gp = new GridPane();
-
         BorderPane bp = new BorderPane();
 
         VBox vbM = new VBox();
@@ -116,7 +114,7 @@ public class BuscaUI extends Application {
             vbM.getChildren().add(new Button(jogo.getNome()));
         }
 
-        // Alinhamento GRID
+        // Alinhamento
         sp.setFitToHeight(true);
 
         hb.setAlignment(Pos.CENTER);
