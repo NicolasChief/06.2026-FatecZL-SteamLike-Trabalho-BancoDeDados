@@ -1,6 +1,7 @@
 package edu.curso.view;
 
 import edu.curso.model.Jogo;
+import edu.curso.model.Usuario;
 import edu.curso.control.BuscaUC;
 
 import java.util.Date;
@@ -14,12 +15,18 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,7 +43,11 @@ public class BuscaUI extends Application {
 
     private TableView<Jogo> tvCatalago = new TableView<>();
 
+    private Button jogoBtn = new Button();
+
     private BuscaUC buscaUC = new BuscaUC();
+
+    private Usuario usuarioLogado = new Usuario("Cliente", null, "cliente@teste.com", null, null, 500.00);
     private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
 
     public void start(Stage stage) {
@@ -46,12 +57,17 @@ public class BuscaUI extends Application {
         BorderPane bp = new BorderPane();
 
         VBox vbM = new VBox();
+        vbM.setAlignment(Pos.TOP_CENTER);
+        vbM.setFillWidth(true);
 
         VBox vbC = new VBox();
 
         HBox hb = new HBox();
 
+        HBox hbS = new HBox();
+
         ScrollPane sp = new ScrollPane(vbM);
+        sp.setFitToWidth(true);
 
         Scene sc = new Scene(bp, 1520, 780);
 
@@ -105,14 +121,35 @@ public class BuscaUI extends Application {
         tvCatalago.getColumns().add(colStatus);
         tvCatalago.getColumns().add(colPub);
         tvCatalago.getColumns().add(colDes);
-
+        tvCatalago.setRowFactory(table -> {
+            TableRow<Jogo> linha = new TableRow<>();
+            linha.setOnMouseClicked(event -> {
+                if (!linha.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    abrirPedido(linha.getItem());
+                }
+            });
+            return linha;
+        });
         tvCatalago.setItems(jogosObservaveis);
         atualizarTabela();
 
-        // Adiciona ao Pane        
+        // Adiciona Imagem
+        Image imgSteam = new Image(getClass().getResourceAsStream("/img/SteamLogo.png"));
+        ImageView imageView = new ImageView(imgSteam);
+        imageView.setFitHeight(204);
+        imageView.setFitWidth(204);
+        imageView.setPreserveRatio(true);
+
+        hbS.setSpacing(50);
+        hb.setAlignment(Pos.CENTER_LEFT);
+
+        // Adiciona ao Pane       
+        tBiblioteca.setMaxWidth(Double.MAX_VALUE);
+        tBiblioteca.setAlignment(Pos.CENTER);
         vbM.getChildren().add(tBiblioteca);
         hb.getChildren().addAll(fBusca, bBusca);
-        vbC.getChildren().addAll(hb, tvCatalago);
+        hbS.getChildren().addAll(imageView, hb); 
+        vbC.getChildren().addAll(hbS, tvCatalago);
 
         bp.setLeft(sp);
         bp.setRight(vbC);
@@ -121,7 +158,12 @@ public class BuscaUI extends Application {
 
         // Lista da Biblioteca
         for (Jogo jogo : buscaUC.listarTodos()) {
-            vbM.getChildren().add(new Button(jogo.getNome()));
+            if (jogo.getStatusAquicicao()) {
+                Button jogoBtn = new Button(jogo.getNome());
+                jogoBtn.setMaxWidth(Double.MAX_VALUE);
+                jogoBtn.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis").show());
+                vbM.getChildren().add(jogoBtn);
+            }
         }
 
         // Alinhamento
@@ -129,6 +171,9 @@ public class BuscaUI extends Application {
 
         hb.setAlignment(Pos.CENTER);
         BorderPane.setAlignment(hb, Pos.CENTER);
+
+        hbS.setAlignment(Pos.CENTER);
+        BorderPane.setAlignment(hbS, Pos.CENTER);
 
         vbC.setAlignment(Pos.CENTER);
         BorderPane.setAlignment(vbC, Pos.CENTER);
@@ -140,6 +185,7 @@ public class BuscaUI extends Application {
         fBusca.setPromptText("Digite o nome do jogo");
         fBusca.setOnAction((e) -> atualizarTabela());
         bBusca.setOnAction((e) -> atualizarTabela());
+        jogoBtn.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis"));
 
         //Inicia
         stage.setScene(sc);
@@ -150,6 +196,10 @@ public class BuscaUI extends Application {
     private void atualizarTabela() {
         List<Jogo> resultados = buscaUC.pesquisarJogo(fBusca.getText());
         jogosObservaveis.setAll(resultados);
+    }
+
+    private void abrirPedido(Jogo jogo) {
+        PedidoUI.mostrarPedido(new Stage(), jogo, usuarioLogado);
     }
 
     private void adicionarDadosDemo() {
