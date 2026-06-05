@@ -1,10 +1,16 @@
 package edu.curso.view;
 
 import edu.curso.model.Jogo;
+import edu.curso.control.BuscaUC;
+
+import java.util.Date;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -31,10 +36,12 @@ public class BuscaUI extends Application {
 
     private TableView<Jogo> tvCatalago = new TableView<>();
 
+    private BuscaUC buscaUC = new BuscaUC();
+    private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
+
     public void start(Stage stage) {
 
-        // Elementos Pane e Scene
-        Jogo jogo = new Jogo(STYLESHEET_CASPIAN, null, 0, 0, STYLESHEET_CASPIAN, STYLESHEET_CASPIAN, false, STYLESHEET_MODENA, STYLESHEET_CASPIAN);
+        adicionarDadosDemo();
 
         BorderPane bp = new BorderPane();
 
@@ -99,6 +106,9 @@ public class BuscaUI extends Application {
         tvCatalago.getColumns().add(colPub);
         tvCatalago.getColumns().add(colDes);
 
+        tvCatalago.setItems(jogosObservaveis);
+        atualizarTabela();
+
         // Adiciona ao Pane        
         vbM.getChildren().add(tBiblioteca);
         hb.getChildren().addAll(fBusca, bBusca);
@@ -110,7 +120,7 @@ public class BuscaUI extends Application {
         VBox.setVgrow(tvCatalago, Priority.ALWAYS);
 
         // Lista da Biblioteca
-        for (int i = 1; i <= 50; i++) {
+        for (Jogo jogo : buscaUC.listarTodos()) {
             vbM.getChildren().add(new Button(jogo.getNome()));
         }
 
@@ -126,10 +136,28 @@ public class BuscaUI extends Application {
         bp.setLeft(sp);
         bp.setRight(vbC);
 
+        // Ações
+        fBusca.setPromptText("Digite o nome do jogo");
+        fBusca.setOnAction((e) -> atualizarTabela());
+        bBusca.setOnAction((e) -> atualizarTabela());
+
         //Inicia
         stage.setScene(sc);
         stage.show();
 
+    }
+
+    private void atualizarTabela() {
+        List<Jogo> resultados = buscaUC.pesquisarJogo(fBusca.getText());
+        jogosObservaveis.setAll(resultados);
+    }
+
+    private void adicionarDadosDemo() {
+        buscaUC.adicionarJogo(new Jogo("Cyberpunk 2077", new Date(), 149.90, 70, "Ação RPG futurista", "PC/PS/Xbox", false, "CD Projekt", "CD Projekt"));
+        buscaUC.adicionarJogo(new Jogo("The Witcher 3", new Date(), 129.90, 50, "RPG medieval", "PC/PS/Xbox", true, "CD Projekt", "CD Projekt"));
+        buscaUC.adicionarJogo(new Jogo("Grand Theft Auto V", new Date(), 99.90, 80, "Ação e aventura", "PC/PS/Xbox", true, "Rockstar", "Rockstar"));
+        buscaUC.adicionarJogo(new Jogo("Horizon Zero Dawn", new Date(), 119.90, 60, "Ação e aventura", "PC/PS", false, "Sony", "Guerrilla Games"));
+        buscaUC.adicionarJogo(new Jogo("God of War", new Date(), 139.90, 55, "Ação e aventura mitológica", "PC/PS", false, "Sony", "Santa Monica Studio"));
     }
 
     public static void main(String[] args) {

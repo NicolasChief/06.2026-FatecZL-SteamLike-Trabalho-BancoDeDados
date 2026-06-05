@@ -6,9 +6,7 @@ import edu.curso.model.Usuario;
 
 public class bancofaketeste {
 
-
-    public static List<Usuario> lista =
-            new ArrayList<>();
+    public static List<Usuario> lista = new ArrayList<>();
     
 
 }
