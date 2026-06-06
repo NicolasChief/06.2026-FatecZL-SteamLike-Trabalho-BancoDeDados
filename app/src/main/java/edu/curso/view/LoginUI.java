@@ -110,6 +110,9 @@ public class LoginUI extends Application {
                 case "USUARIO_NAO_EXISTE":
                     new Alert(AlertType.WARNING, "Usuário não encontrado.").show();
                     break;
+                case "ERRO_BD":
+                    new Alert(AlertType.ERROR, "Erro ao acessar o banco de dados. Verifique a conexão.").show();
+                    break;
                 default:
                     new Alert(AlertType.ERROR, "Erro desconhecido de login.").show();
             }

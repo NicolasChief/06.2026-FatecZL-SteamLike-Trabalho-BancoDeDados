@@ -1,42 +1,51 @@
 package edu.curso.control;
 
+import java.util.List;
 
-import edu.curso.banco.bancofaketeste;  //substituir
+import edu.curso.banco.UsuarioDAO;
+import edu.curso.banco.UsuarioDAOImpl;
 import edu.curso.model.Usuario;
-
 
 public class LoginUC {
 
     public String logar(String nome, String senha) {
+        try {
+            UsuarioDAO dao = new UsuarioDAOImpl();
+            List<Usuario> lista = dao.consultarPorNome(nome);
+            if (lista == null || lista.isEmpty()) {
+                return "USUARIO_NAO_EXISTE";
+            }
 
-        for (Usuario u : bancofaketeste.lista) // trocar para sql 
-        {
-
-            if (u.getNome().equals(nome)) {
-
-                if (
-                    u.getSenha().equals(senha)
-                ) {
-
-                    return "LOGIN_OK";
-
-                } else {
-
-                    return "SENHA_INCORRETA";
+            for (Usuario u : lista) {
+                if (u.getNome() != null && u.getNome().equalsIgnoreCase(nome)) {
+                    if (u.getSenha() != null && u.getSenha().equals(senha)) {
+                        return "LOGIN_OK";
+                    } else {
+                        return "SENHA_INCORRETA";
+                    }
                 }
             }
-        }
 
-        return "USUARIO_NAO_EXISTE";
+            return "USUARIO_NAO_EXISTE";
+        } catch (RuntimeException e) {
+            return "ERRO_BD";
+        }
     }
 
     public Usuario autenticar(String nome, String senha) {
-        for (Usuario u : bancofaketeste.lista) {
-            if (//u.getNome().equals(nome) && u.getSenha().equals(senha)) {
-                u.getNome().equals("admin") && u.getSenha().equals("admin")) {
-                return u;
+        try {
+            UsuarioDAO dao = new UsuarioDAOImpl();
+            List<Usuario> lista = dao.consultarPorNome(nome);
+            if (lista == null) return null;
+            for (Usuario u : lista) {
+                if (u.getNome() != null && u.getNome().equalsIgnoreCase(nome)
+                        && u.getSenha() != null && u.getSenha().equals(senha)) {
+                    return u;
+                }
             }
+            return null;
+        } catch (RuntimeException e) {
+            return null;
         }
-        return null;
     }
 }

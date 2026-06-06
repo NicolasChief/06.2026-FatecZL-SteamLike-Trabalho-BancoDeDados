@@ -1,7 +1,7 @@
 package edu.curso.view;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import edu.curso.banco.UsuarioDAOImpl;
@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -24,7 +25,7 @@ import javafx.stage.Stage;
 public class CadastrarUI extends Application {
 
     private TextField fNome = new TextField();
-    private TextField fData = new TextField();
+    private DatePicker fData = new DatePicker();
     private TextField fEmail = new TextField();
     private TextField fSenha = new TextField();
     private TextField fTel = new TextField();
@@ -85,23 +86,21 @@ public class CadastrarUI extends Application {
 
         bConfirmar.setOnAction(event -> {
             String nome = fNome.getText().trim();
-            String dataStr = fData.getText().trim();
+            LocalDate dataSelecionada = fData.getValue();
             String email = fEmail.getText().trim();
             String senha = fSenha.getText();
             String telefone = fTel.getText().trim();
 
-            if (nome.isEmpty() || dataStr.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-                new Alert(AlertType.WARNING, "Preencha todos os campos obrigatórios.").show();
+            if (nome.isEmpty() || dataSelecionada == null || email.isEmpty() || senha.isEmpty()) {
+                new Alert(AlertType.WARNING, "Preencha todos os campos obrigatórios. Data também é obrigatória.").show();
                 return;
             }
 
-            Date dataNasc;
-            try {
-                SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
-                fmt.setLenient(false);
-                dataNasc = fmt.parse(dataStr);
-            } catch (ParseException e) {
-                new Alert(AlertType.WARNING, "Formato de data inválido. Use dd/MM/yyyy.").show();
+            Date dataNasc = Date.from(dataSelecionada.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            // Validação do telefone: aceitar vazio ou apenas 10 ou 11 dígitos
+            if (!telefone.isEmpty() && !telefone.matches("\\d{10}|\\d{11}")) {
+                new Alert(AlertType.WARNING, "Telefone inválido. Use apenas dígitos (10 ou 11 caracteres).").show();
                 return;
             }
 

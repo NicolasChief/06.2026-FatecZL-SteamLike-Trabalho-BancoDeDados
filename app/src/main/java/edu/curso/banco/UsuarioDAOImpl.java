@@ -26,14 +26,19 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         } catch (ClassNotFoundException e) {
             System.out.println("Erro ao carregar o driver MSSQL");
             e.printStackTrace();
+            throw new RuntimeException("Driver JDBC do SQL Server não encontrado", e);
         } catch (SQLException e) {
             System.out.println("Erro ao conectar");
             e.printStackTrace();
+            throw new RuntimeException("Erro ao conectar ao banco de dados SQL Server", e);
         }
     }
 
     @Override
     public void cadastrar(Usuario usuario) {
+        if (con == null) {
+            throw new RuntimeException("Sem conexão com o banco de dados. Verifique driver, servidor e credenciais.");
+        }
         try {
             String nextIdSql = "SELECT ISNULL(MAX(cod), 0) + 1 FROM Usuario";
             PreparedStatement nextIdStm = con.prepareStatement(nextIdSql);
@@ -52,7 +57,13 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stm.setDate(3, new java.sql.Date(usuario.getDataNasc().getTime()));
             stm.setString(4, usuario.getEmail());
             stm.setString(5, usuario.getSenha());
-            stm.setString(6, usuario.getTelefone());
+            String tel = usuario.getTelefone();
+            if (tel == null || tel.trim().isEmpty()) {
+                stm.setNull(6, java.sql.Types.VARCHAR);
+                System.out.println("Inserindo telefone como NULL (campo vazio no formulário)");
+            } else {
+                stm.setString(6, tel);
+            }
             stm.executeUpdate();
             stm.close();
             System.out.println("Comando executado com sucesso");

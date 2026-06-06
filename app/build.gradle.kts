@@ -21,6 +21,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    // Microsoft SQL Server JDBC driver
+    implementation("com.microsoft.sqlserver:mssql-jdbc:11.2.2.jre17")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
