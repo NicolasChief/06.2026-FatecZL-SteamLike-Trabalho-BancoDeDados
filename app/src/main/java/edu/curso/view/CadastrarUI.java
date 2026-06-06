@@ -1,70 +1,84 @@
 package edu.curso.view;
 
 import javafx.application.Application;
-import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import edu.curso.control.LoginUC;
+import edu.curso.model.Usuario;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class CadastrarUI extends Application {
-    
+
     private TextField fNome = new TextField();
+    private TextField fData = new TextField();
+    private TextField fEmail = new TextField();
     private TextField fSenha = new TextField();
+    private TextField fTel = new TextField();
 
-    private Label tNome = new Label("Usuário: ");
-    private Label tSenha = new Label("Senha: ");
-    private Label tCadastrar = new Label("Primeira Vez?");
+    private Label tNome = new Label("Digite seu Username: ");
+    private Label tData = new Label("Insira sua data de nascimento: ");
+    private Label tEmail = new Label("Insira seu email: ");
+    private Label tSenha = new Label("Insira sua senha: ");
+    private Label tTel = new Label("Insira seu telefone: ");
 
-    private Button bEntrar = new Button("Acessar");
+    private Button bConfirmar = new Button("Confirmar");
+    private Button bCancelar = new Button("Cancelar");
 
     public void start(Stage stage){
 
         // Elementos Pane e Scene
-        GridPane gp = new GridPane();
-        gp.setAlignment(Pos.CENTER);
-        gp.setHgap(10);
-        gp.setVgap(40);
 
-        HBox hbN = new HBox(20);
-        hbN.setAlignment(Pos.CENTER);
+        BorderPane bp = new BorderPane();
 
-        HBox hbS = new HBox(20);
-        hbS.setAlignment(Pos.CENTER);
+        HBox hbB = new HBox();
+        HBox hbNS = new HBox();
+        HBox hbDT = new HBox();
+        HBox hbE = new HBox();
 
-        HBox hbO = new HBox(40);
-        hbO.setAlignment(Pos.CENTER);
+        VBox vb = new VBox();
 
-        VBox vb = new VBox(20);
-        vb.setAlignment(Pos.CENTER);
-        
-        Scene sc = new Scene(gp, 1520, 780);
-
-        // Tamanho
-        fNome.setPrefSize(500, 50);
-        fSenha.setPrefSize(500, 50);
-
-        bEntrar.setPrefSize(250, 50);
-        tCadastrar.setPrefSize(250, 50);
+        Scene sc = new Scene(bp, 1520, 780);
 
         // Adiciona ao Pane
-        hbN.getChildren().addAll(tNome, fNome);
-        hbS.getChildren().addAll(tSenha, fSenha);
-        hbO.getChildren().addAll(bEntrar, tCadastrar);
+        hbNS.getChildren().addAll(tNome, fNome, tSenha, fSenha);
+        hbDT.getChildren().addAll(tData, fData, tTel, fTel);
+        hbE.getChildren().addAll(tEmail, fEmail);
+        hbB.getChildren().addAll(bCancelar, bConfirmar);
 
-        vb.getChildren().addAll(hbN, hbS, hbO);
+        vb.getChildren().addAll(hbNS, hbDT, hbE, hbB);
 
-        gp.add(vb, 0, 0);
+        bp.setCenter(vb);
 
-        // Alinhamento GRID
-        GridPane.setHalignment(vb, HPos.CENTER);
-        GridPane.setValignment(vb, VPos.CENTER);
+        // Tamanho
+        fEmail.setPrefWidth(500);
+
+        // Alinhamento
+        hbNS.setAlignment(Pos.CENTER);
+        hbDT.setAlignment(Pos.CENTER);
+        hbE.setAlignment(Pos.CENTER);
+        hbB.setAlignment(Pos.CENTER);
+        vb.setAlignment(Pos.CENTER);
+
+        hbNS.setSpacing(20);
+        hbDT.setSpacing(20);
+        hbE.setSpacing(20);
+        hbB.setSpacing(20);
+        vb.setSpacing(20);
+        bp.setPadding(new Insets(40));
+
+        // Ações
 
         //Inicia
         stage.setScene(sc);
@@ -76,4 +90,5 @@ public class CadastrarUI extends Application {
         Application.launch(CadastrarUI.class, args);
     }
 
+    
 }

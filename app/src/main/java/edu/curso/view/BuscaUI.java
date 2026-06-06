@@ -202,6 +202,16 @@ public class BuscaUI extends Application {
         PedidoUI.mostrarPedido(new Stage(), jogo, usuarioLogado);
     }
 
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
+
+    public static void mostrarBusca(Stage stage, Usuario usuario) {
+        BuscaUI buscaUI = new BuscaUI();
+        buscaUI.setUsuarioLogado(usuario);
+        buscaUI.start(stage);
+    }
+
     private void adicionarDadosDemo() {
         buscaUC.adicionarJogo(new Jogo("Cyberpunk 2077", new Date(), 149.90, 70, "Ação RPG futurista", "PC/PS/Xbox", false, "CD Projekt", "CD Projekt"));
         buscaUC.adicionarJogo(new Jogo("The Witcher 3", new Date(), 129.90, 50, "RPG medieval", "PC/PS/Xbox", true, "CD Projekt", "CD Projekt"));
@@ -210,8 +220,8 @@ public class BuscaUI extends Application {
         buscaUC.adicionarJogo(new Jogo("God of War", new Date(), 139.90, 55, "Ação e aventura mitológica", "PC/PS", false, "Sony", "Santa Monica Studio"));
     }
 
-    public static void main(String[] args) {
+/*     public static void main(String[] args) {
         Application.launch(BuscaUI.class, args);
-    }
+    } */
 
 }

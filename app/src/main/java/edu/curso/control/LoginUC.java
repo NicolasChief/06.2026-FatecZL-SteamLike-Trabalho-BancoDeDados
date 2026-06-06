@@ -29,4 +29,14 @@ public class LoginUC {
 
         return "USUARIO_NAO_EXISTE";
     }
+
+    public Usuario autenticar(String nome, String senha) {
+        for (Usuario u : bancofaketeste.lista) {
+            if (//u.getNome().equals(nome) && u.getSenha().equals(senha)) {
+                u.getNome().equals("admin") && u.getSenha().equals("admin")) {
+                return u;
+            }
+        }
+        return null;
+    }
 }
