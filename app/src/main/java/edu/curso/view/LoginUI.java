@@ -117,7 +117,11 @@ public class LoginUI extends Application {
 
         tCadastrar.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                //novoCadastro();
+                try {
+                    new CadastrarUI().start(new Stage());
+                } catch (Exception e) {
+                    new Alert(AlertType.ERROR, "Não foi possível abrir a tela de cadastro.").show();
+                }
             }
         });
 
