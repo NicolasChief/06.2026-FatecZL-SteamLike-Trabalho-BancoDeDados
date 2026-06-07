@@ -45,10 +45,6 @@ public class BuscaUI extends Application {
 
     private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
 
-//    public void setBuscaUC(BuscaUC buscaUC) {
-//        this.buscaUC = buscaUC;
-//    }
-
     public void start(Stage stage) {
 
         buscaUC.adicionarDadosDemo();

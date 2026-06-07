@@ -24,6 +24,8 @@ public class JogoDAOImpl implements JogoDAO {
 
     private Connection con;
 
+    public static List<Jogo> jogos = new ArrayList<>();
+
     public JogoDAOImpl() {
         System.out.println("Usuario DAO criado - com database MSSQL");
 
