@@ -9,6 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.io.File;
+import java.net.URL;
 import javafx.stage.Stage;
 
 public class PublicarUI extends Application {
@@ -77,6 +81,49 @@ public class PublicarUI extends Application {
         rightContainer.setAlignment(Pos.CENTER);
         rightContainer.getChildren().add(vb);
         bp.setRight(rightContainer);
+
+        // Left side: show PH.png
+        VBox leftContainer = new VBox();
+        leftContainer.setAlignment(Pos.CENTER);
+        leftContainer.prefWidthProperty().bind(scn.widthProperty().divide(2));
+        leftContainer.prefHeightProperty().bind(scn.heightProperty());
+
+        ImageView imgView = new ImageView();
+        Image img = null;
+        try {
+            URL imgUrl = getClass().getResource("/img/PH.png");
+            if (imgUrl != null) {
+                img = new Image(imgUrl.toExternalForm());
+                System.out.println("Loaded PH.png from classpath: " + imgUrl);
+            } else {
+                // try common local paths for running from IDE
+                File f1 = new File("app/src/main/resources/img/PH.png");
+                File f2 = new File("src/main/resources/img/PH.png");
+                if (f1.exists()) {
+                    img = new Image(f1.toURI().toString());
+                    System.out.println("Loaded PH.png from file: " + f1.getAbsolutePath());
+                } else if (f2.exists()) {
+                    img = new Image(f2.toURI().toString());
+                    System.out.println("Loaded PH.png from file: " + f2.getAbsolutePath());
+                } else {
+                    System.out.println("PH.png not found in classpath or expected resource paths.");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (img != null) {
+            imgView.setImage(img);
+        } else {
+            // show placeholder text if image not found
+            System.out.println("Imagem PH.png não carregada — verifique o caminho.");
+        }
+        imgView.setPreserveRatio(true);
+        imgView.setFitWidth(500);
+        imgView.setFitHeight(680);
+        leftContainer.getChildren().add(imgView);
+
+        bp.setLeft(leftContainer);
 
         hbNP.setAlignment(Pos.CENTER);
         hbD.setAlignment(Pos.CENTER);
