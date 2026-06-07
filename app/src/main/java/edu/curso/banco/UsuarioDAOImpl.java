@@ -12,28 +12,57 @@ import java.util.List;
 import edu.curso.model.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
-    private static final String DB_JDBC_URI = "jdbc:sqlserver://NOTEBOFFO:51075;databaseName=Jogo;encrypt=false;trustServerCertificate=true";
+    private static final String[] DB_URLS = {
+        "jdbc:sqlserver://NOTEBOFFO:51075;databaseName=Jogo;encrypt=false;trustServerCertificate=true",
+        "jdbc:sqlserver://localhost:1433;databaseName=Jogo;encrypt=false;trustServerCertificate=true",
+        "jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=Jogo;encrypt=false;trustServerCertificate=true",
+        "jdbc:sqlserver://localhost;instanceName=EXPRESS;databaseName=Jogo;encrypt=false;trustServerCertificate=true"
+    };
+
     private static final String DB_USER = "Admin";
     private static final String DB_PASS = "12345678";
+
     private Connection con;
 
     public UsuarioDAOImpl() {
         System.out.println("Usuario DAO criado - com database MSSQL");
+
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(DB_JDBC_URI, DB_USER, DB_PASS);
-            System.out.println("Conexao foi feita com sucesso");
+
+            for (String url : DB_URLS) {
+                try {
+                    System.out.println("Tentando conectar em: " + url);
+
+                    con = DriverManager.getConnection(
+                        url,
+                        DB_USER,
+                        DB_PASS
+                    );
+
+                    System.out.println("Conexão realizada com sucesso!");
+                    System.out.println("URL utilizada: " + url);
+
+                    break;
+                } catch (SQLException e) {
+                    System.out.println("Falha na conexão: " + url);
+                }
+            }
+
+            if (con == null) {
+                throw new RuntimeException(
+                    "Não foi possível conectar a nenhuma instância SQL Server."
+                );
+            }
+
         } catch (ClassNotFoundException e) {
-            System.out.println("Erro ao carregar o driver MSSQL");
-            e.printStackTrace();
-            throw new RuntimeException("Driver JDBC do SQL Server não encontrado", e);
-        } catch (SQLException e) {
-            System.out.println("Erro ao conectar");
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao conectar ao banco de dados SQL Server", e);
+            throw new RuntimeException(
+                "Driver JDBC do SQL Server não encontrado",
+                e
+            );
         }
     }
-
+    
     @Override
     public void cadastrar(Usuario usuario) {
         if (con == null) {
