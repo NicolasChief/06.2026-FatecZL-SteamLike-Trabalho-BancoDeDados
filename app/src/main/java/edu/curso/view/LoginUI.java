@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import edu.curso.control.LoginUC;
 import edu.curso.model.Usuario;
+import edu.curso.model.Desenvolvedora;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -99,6 +100,7 @@ public class LoginUI extends Application {
                 return;
             }
             
+            // Tenta login como Usuário primeiro
             String resultado = loginUC.logar(nome, senha);
 
             switch (resultado) {
@@ -115,7 +117,11 @@ public class LoginUI extends Application {
                     new Alert(AlertType.WARNING, "Senha incorreta. Tente novamente.").show();
                     break;
                 case "USUARIO_NAO_EXISTE":
-                    new Alert(AlertType.WARNING, "Usuário não encontrado.").show();
+                    // Se não encontrar como usuário, tenta como desenvolvedor
+                    // TODO: Implementar login de desenvolvedor no banco de dados
+                    Desenvolvedora dev = new Desenvolvedora(nome, ""); // CNPJ padrão
+                    BuscaUI.mostrarBusca(new Stage(), dev);
+                    stage.close();
                     break;
                 case "ERRO_BD":
                     new Alert(AlertType.ERROR, "Erro ao acessar o banco de dados. Verifique a conexão.").show();
@@ -128,7 +134,7 @@ public class LoginUI extends Application {
         tCadastrar.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 try {
-                    new CadastrarUI().start(new Stage());
+                    new CadastroTipoUI().start(new Stage());
                 } catch (Exception e) {
                     new Alert(AlertType.ERROR, "Não foi possível abrir a tela de cadastro.").show();
                 }

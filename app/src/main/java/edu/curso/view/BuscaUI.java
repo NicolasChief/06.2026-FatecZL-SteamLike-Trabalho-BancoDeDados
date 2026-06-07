@@ -2,6 +2,7 @@ package edu.curso.view;
 
 import edu.curso.model.Jogo;
 import edu.curso.model.Usuario;
+import edu.curso.model.Desenvolvedora;
 import edu.curso.control.BuscaUC;
 
 import java.util.Date;
@@ -37,7 +38,11 @@ public class BuscaUI extends Application {
 
     private TextField fBusca = new TextField();
 
+    private Button bAdicionar = new Button("+");
+
     private Button bBusca = new Button("🔍");
+    
+    private Object usuarioOuDesenvolvedor;
 
     private Label tBiblioteca = new Label("Biblioteca de Jogos");
 
@@ -47,7 +52,6 @@ public class BuscaUI extends Application {
 
     private BuscaUC buscaUC = new BuscaUC();
 
-    private Usuario usuarioLogado = new Usuario("Cliente", null, "cliente@teste.com", null, null, 500.00);
     private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
 
     public void start(Stage stage) {
@@ -143,11 +147,22 @@ public class BuscaUI extends Application {
         hbS.setSpacing(50);
         hb.setAlignment(Pos.CENTER_LEFT);
 
+        // Verifica se é Desenvolvedor e mostra botão adicionar
+        boolean isDesenvolvedor = usuarioOuDesenvolvedor instanceof Desenvolvedora;
+        if (isDesenvolvedor) {
+            bAdicionar.setPrefSize(50, 50);
+            bAdicionar.setOnAction(event -> {
+                new PublicarUI().start(new Stage());
+            });
+            hb.getChildren().addAll(fBusca, bBusca, bAdicionar);
+        } else {
+            hb.getChildren().addAll(fBusca, bBusca);
+        }
+
         // Adiciona ao Pane       
         tBiblioteca.setMaxWidth(Double.MAX_VALUE);
         tBiblioteca.setAlignment(Pos.CENTER);
         vbM.getChildren().add(tBiblioteca);
-        hb.getChildren().addAll(fBusca, bBusca);
         hbS.getChildren().addAll(imageView, hb); 
         vbC.getChildren().addAll(hbS, tvCatalago);
 
@@ -199,16 +214,18 @@ public class BuscaUI extends Application {
     }
 
     private void abrirPedido(Jogo jogo) {
-        PedidoUI.mostrarPedido(new Stage(), jogo, usuarioLogado);
+        if (usuarioOuDesenvolvedor instanceof Usuario) {
+            PedidoUI.mostrarPedido(new Stage(), jogo, (Usuario) usuarioOuDesenvolvedor);
+        }
     }
 
-    public void setUsuarioLogado(Usuario usuarioLogado) {
-        this.usuarioLogado = usuarioLogado;
+    public void setUsuarioOuDesenvolvedor(Object usuario) {
+        this.usuarioOuDesenvolvedor = usuario;
     }
 
-    public static void mostrarBusca(Stage stage, Usuario usuario) {
+    public static void mostrarBusca(Stage stage, Object usuarioOuDesenvolvedor) {
         BuscaUI buscaUI = new BuscaUI();
-        buscaUI.setUsuarioLogado(usuario);
+        buscaUI.setUsuarioOuDesenvolvedor(usuarioOuDesenvolvedor);
         buscaUI.start(stage);
     }
 

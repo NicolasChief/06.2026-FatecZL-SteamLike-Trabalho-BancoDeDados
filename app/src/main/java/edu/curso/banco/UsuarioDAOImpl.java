@@ -136,4 +136,24 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             e.printStackTrace();
         }
     }
+
+    public void atualizarSaldo(String nomeUsuario, double novoSaldo) {
+        try {
+            String sql = "UPDATE Usuario SET saldoConta = ? WHERE Nome = ?";
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setDouble(1, novoSaldo);
+            stm.setString(2, nomeUsuario);
+            int linhasAfetadas = stm.executeUpdate();
+            stm.close();
+            if (linhasAfetadas > 0) {
+                System.out.println("Saldo do usuário atualizado com sucesso. Novo saldo: " + novoSaldo);
+            } else {
+                System.out.println("Usuário não encontrado para atualizar saldo");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar saldo do usuário");
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar saldo: " + e.getMessage(), e);
+        }
+    }
 }
