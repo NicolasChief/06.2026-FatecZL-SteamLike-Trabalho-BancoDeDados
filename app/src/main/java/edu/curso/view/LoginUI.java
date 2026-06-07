@@ -118,8 +118,6 @@ public class LoginUI extends Application {
                     new Alert(AlertType.WARNING, "Senha incorreta. Tente novamente.").show();
                     break;
                 case "USUARIO_NAO_EXISTE":
-                    // Se não encontrar como usuário, tenta como desenvolvedor
-                    // TODO: Implementar login de desenvolvedor no banco de dados
                     Desenvolvedora dev = new Desenvolvedora(nome, ""); // CNPJ padrão
                     BuscaUC.mostrarBusca(new Stage(), dev);
                     stage.close();

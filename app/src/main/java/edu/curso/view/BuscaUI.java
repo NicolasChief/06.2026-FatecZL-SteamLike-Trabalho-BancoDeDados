@@ -212,4 +212,8 @@ public class BuscaUI extends Application {
 
     }
 
+    public void setBuscaUC(BuscaUC buscaUC) {
+        throw new UnsupportedOperationException("Unimplemented method 'setBuscaUC'");
+    }
+
 }

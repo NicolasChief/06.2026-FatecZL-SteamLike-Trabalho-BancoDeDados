@@ -1,5 +1,6 @@
 package edu.curso.view;
 
+import edu.curso.control.AdminUC;
 import edu.curso.model.Desenvolvedora;
 import edu.curso.model.Jogo;
 import edu.curso.model.Pedido;
@@ -42,6 +43,8 @@ public class AdminUI extends Application {
 
     public void start(Stage stage){
 
+        AdminUC AdminUC = new AdminUC();
+
         // Elementos Pane e Scene
 
         BorderPane bp = new BorderPane();
@@ -65,13 +68,13 @@ public class AdminUI extends Application {
 
         // Preenche a TableView inicial
 
-        atualizarTabela("Jogos");
+        AdminUC.atualizarTabela("Jogos", tvDados);
 
         // Listener para mudar a tabela ao selecionar novo tipo
 
         cbTipos.setOnAction(e -> {
             String tipoSelecionado = cbTipos.getValue();
-            atualizarTabela(tipoSelecionado);
+            AdminUC.atualizarTabela(tipoSelecionado, tvDados);
         });
 
         // Adiciona elementos ao HBox superior
@@ -103,89 +106,6 @@ public class AdminUI extends Application {
         stage.setScene(scn);
         stage.setTitle("Administrador");
         stage.show();
-    }
-
-    private void atualizarTabela(String tipo) {
-        tvDados.getColumns().clear();
-        tvDados.setItems(null);
-
-        switch (tipo) {
-            case "Jogos":
-                criarTabelaJogos();
-                break;
-            case "Usuarios":
-                criarTabelaUsuarios();
-                break;
-            case "Pedidos":
-                criarTabelaPedidos();
-                break;
-            case "Desenvolvedores":
-                criarTabelaDesenvolvedores();
-                break;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void criarTabelaJogos() {
-        TableColumn<Jogo, String> colNome = new TableColumn<>("Nome");
-        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
-        TableColumn<Jogo, String> colDesenvolvedor = new TableColumn<>("Desenvolvedora");
-        colDesenvolvedor.setCellValueFactory(new PropertyValueFactory<>("desenvolvedora"));
-
-        TableColumn<Jogo, String> colPublicadora = new TableColumn<>("Publicadora");
-        colPublicadora.setCellValueFactory(new PropertyValueFactory<>("publicadora"));
-
-        TableColumn<Jogo, Double> colPreco = new TableColumn<>("Preço");
-        colPreco.setCellValueFactory(new PropertyValueFactory<>("preco"));
-
-        TableColumn<Jogo, Double> colEspaco = new TableColumn<>("Espaço (GB)");
-        colEspaco.setCellValueFactory(new PropertyValueFactory<>("espacoArmazenamento"));
-
-        tvDados.getColumns().addAll(colNome, colDesenvolvedor, colPublicadora, colPreco, colEspaco);
-
-    }
-
-    @SuppressWarnings("unchecked")
-    private void criarTabelaUsuarios() {
-        TableColumn<Usuario, String> colNome = new TableColumn<>("Nome");
-        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
-        TableColumn<Usuario, String> colEmail = new TableColumn<>("Email");
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-
-        TableColumn<Usuario, String> colTelefone = new TableColumn<>("Telefone");
-        colTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
-
-        TableColumn<Usuario, Double> colSaldo = new TableColumn<>("Saldo");
-        colSaldo.setCellValueFactory(new PropertyValueFactory<>("saldoConta"));
-
-        tvDados.getColumns().addAll(colNome, colEmail, colTelefone, colSaldo);
-
-    }
-
-    @SuppressWarnings("unchecked")
-    private void criarTabelaPedidos() {
-        TableColumn<Pedido, String> colStatus = new TableColumn<>("Status");
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusPedido"));
-
-        TableColumn<Pedido, Double> colValor = new TableColumn<>("Valor Total");
-        colValor.setCellValueFactory(new PropertyValueFactory<>("valorTotal"));
-
-        tvDados.getColumns().addAll(colStatus, colValor);
-
-    }
-
-    @SuppressWarnings("unchecked")
-    private void criarTabelaDesenvolvedores() {
-        TableColumn<Desenvolvedora, String> colNome = new TableColumn<>("Nome");
-        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
-        TableColumn<Desenvolvedora, String> colCNPJ = new TableColumn<>("CNPJ/CPF");
-        colCNPJ.setCellValueFactory(new PropertyValueFactory<>("cnpjcpf"));
-
-        tvDados.getColumns().addAll(colNome, colCNPJ);
-
     }
 
     public static void mostrarAdmin(Stage stage) {
