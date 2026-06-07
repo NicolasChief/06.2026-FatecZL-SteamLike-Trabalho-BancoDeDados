@@ -1,7 +1,6 @@
 package edu.curso.view;
 
 import edu.curso.control.CadastrarUC;
-import edu.curso.model.Desenvolvedora;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

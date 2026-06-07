@@ -1,12 +1,6 @@
 package edu.curso.view;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-
-import edu.curso.banco.UsuarioDAOImpl;
 import edu.curso.control.CadastrarUC;
-import edu.curso.model.Usuario;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
