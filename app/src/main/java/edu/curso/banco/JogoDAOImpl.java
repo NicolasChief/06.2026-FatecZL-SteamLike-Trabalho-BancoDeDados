@@ -12,7 +12,7 @@ import java.util.List;
 import edu.curso.model.Jogo;
 
 public class JogoDAOImpl implements JogoDAO {
-    private static final String DB_JDBC_URI = "jdbc:sqlserver://localhost:1433;databaseName=Jogo;encrypt=false;trustServerCertificate=true";
+    private static final String DB_JDBC_URI = "jdbc:sqlserver://NOTEBOFFO:51075;databaseName=Jogo;encrypt=false;trustServerCertificate=true";
     private static final String DB_USER = "Admin";
     private static final String DB_PASS = "12345678";
     private Connection con;
