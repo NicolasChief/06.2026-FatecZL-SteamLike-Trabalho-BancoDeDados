@@ -36,3 +36,11 @@ application {
     // Define the main class for the application.
     mainClass = "edu.curso.Main"
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDirs("app/src/main/resources")
+        }
+    }
+}
