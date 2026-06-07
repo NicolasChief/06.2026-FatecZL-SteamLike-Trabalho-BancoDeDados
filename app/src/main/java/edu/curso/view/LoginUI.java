@@ -92,6 +92,13 @@ public class LoginUI extends Application {
         bEntrar.setOnAction(event -> {
             String nome = fNome.getText().trim();
             String senha = fSenha.getText();
+            
+            // Verifica se é admin
+            if (nome.equalsIgnoreCase("admin") && senha.equals("admin")) {
+                AdminUI.mostrarAdmin(new Stage());
+                return;
+            }
+            
             String resultado = loginUC.logar(nome, senha);
 
             switch (resultado) {

@@ -98,7 +98,7 @@ public class CadastrarUI extends Application {
 
             Date dataNasc = Date.from(dataSelecionada.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            // Validação do telefone: aceitar vazio ou apenas 10 ou 11 dígitos
+            // Validação do telefone
             if (!telefone.isEmpty() && !telefone.matches("\\d{10}|\\d{11}")) {
                 new Alert(AlertType.WARNING, "Telefone inválido. Use apenas dígitos (10 ou 11 caracteres).").show();
                 return;
