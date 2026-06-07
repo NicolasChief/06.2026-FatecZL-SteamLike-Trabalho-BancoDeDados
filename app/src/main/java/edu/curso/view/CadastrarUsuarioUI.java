@@ -121,7 +121,4 @@ public class CadastrarUsuarioUI extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        Application.launch(CadastrarUsuarioUI.class, args);
-    }
 }

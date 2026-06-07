@@ -105,9 +105,6 @@ public class AdminUI extends Application {
         stage.show();
     }
 
-    /**
-     * Atualiza a TableView com base no tipo selecionado
-     */
     private void atualizarTabela(String tipo) {
         tvDados.getColumns().clear();
         tvDados.setItems(null);
@@ -191,9 +188,6 @@ public class AdminUI extends Application {
 
     }
 
-    /**
-     * Método estático para abrir a tela de administrador
-     */
     public static void mostrarAdmin(Stage stage) {
         try {
             AdminUI admin = new AdminUI();
@@ -201,10 +195,6 @@ public class AdminUI extends Application {
         } catch (Exception e) {
             new Alert(AlertType.ERROR, "Erro ao abrir a tela de administrador.").show();
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 }

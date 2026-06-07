@@ -118,7 +118,4 @@ public class CadastrarDesenvolvedorUI extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        Application.launch(CadastrarDesenvolvedorUI.class, args);
-    }
 }

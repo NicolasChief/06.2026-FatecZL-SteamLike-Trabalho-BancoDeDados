@@ -237,8 +237,4 @@ public class BuscaUI extends Application {
         buscaUC.adicionarJogo(new Jogo("God of War", new Date(), 139.90, 55, "Ação e aventura mitológica", "PC/PS", false, "Sony", "Santa Monica Studio"));
     }
 
-/*     public static void main(String[] args) {
-        Application.launch(BuscaUI.class, args);
-    } */
-
 }
