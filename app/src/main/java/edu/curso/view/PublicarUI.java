@@ -31,14 +31,12 @@ public class PublicarUI extends Application {
     public void start(Stage stage){
 
         // Elementos Pane
+
         BorderPane bp = new BorderPane();
 
         HBox hbNP = new HBox();
-
-        HBox hbD = new HBox();
-        
+        HBox hbD = new HBox();       
         HBox hbR = new HBox();        
-
         HBox hbB = new HBox();
 
         VBox vb = new VBox();
@@ -46,12 +44,14 @@ public class PublicarUI extends Application {
         Scene scn = new Scene(bp, 1520, 780);
 
         // Tamanho
+
         bCancelar.setPrefSize(150, 50);
         bPublicar.setPrefSize(150, 50);
 
         fDescricao.setPrefSize(400, 200);
 
         // Margem
+
         hbB.setSpacing(20);
         hbNP.setSpacing(10);
         hbD.setSpacing(10);
@@ -66,7 +66,8 @@ public class PublicarUI extends Application {
         hbB.getChildren().addAll(bCancelar, bPublicar);
         vb.getChildren().addAll(hbNP, hbD, hbR, hbB);
 
-        // Alinhamento GRID
+        // Alinhamento
+
         vb.setAlignment(Pos.CENTER);
 
         HBox rightContainer = new HBox();
@@ -83,7 +84,8 @@ public class PublicarUI extends Application {
 
         BorderPane.setAlignment(rightContainer, Pos.CENTER);
 
-        // Inicia
+        // Inicializar
+
         stage.setScene(scn);
         stage.show();
 

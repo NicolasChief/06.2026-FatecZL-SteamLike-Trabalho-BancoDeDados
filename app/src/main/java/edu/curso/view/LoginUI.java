@@ -3,6 +3,7 @@ package edu.curso.view;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import edu.curso.control.BuscaUC;
 import edu.curso.control.LoginUC;
 import edu.curso.model.Usuario;
 import edu.curso.model.Desenvolvedora;
@@ -107,7 +108,7 @@ public class LoginUI extends Application {
                 case "LOGIN_OK":
                     Usuario usuario = loginUC.autenticar(nome, senha);
                     if (usuario != null) {
-                        BuscaUI.mostrarBusca(new Stage(), usuario);
+                        BuscaUC.mostrarBusca(new Stage(), usuario);
                         stage.close();
                     } else {
                         new Alert(AlertType.ERROR, "Erro interno ao autenticar usuário.").show();
@@ -120,7 +121,7 @@ public class LoginUI extends Application {
                     // Se não encontrar como usuário, tenta como desenvolvedor
                     // TODO: Implementar login de desenvolvedor no banco de dados
                     Desenvolvedora dev = new Desenvolvedora(nome, ""); // CNPJ padrão
-                    BuscaUI.mostrarBusca(new Stage(), dev);
+                    BuscaUC.mostrarBusca(new Stage(), dev);
                     stage.close();
                     break;
                 case "ERRO_BD":

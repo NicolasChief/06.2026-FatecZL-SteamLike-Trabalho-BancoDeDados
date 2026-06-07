@@ -1,12 +1,7 @@
 package edu.curso.view;
 
 import edu.curso.model.Jogo;
-import edu.curso.model.Usuario;
-import edu.curso.model.Desenvolvedora;
 import edu.curso.control.BuscaUC;
-
-import java.util.Date;
-import java.util.List;
 
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
@@ -39,35 +34,35 @@ public class BuscaUI extends Application {
     private TextField fBusca = new TextField();
 
     private Button bAdicionar = new Button("+");
-
     private Button bBusca = new Button("🔍");
-    
-    private Object usuarioOuDesenvolvedor;
+    private Button bJogo = new Button();
 
     private Label tBiblioteca = new Label("Biblioteca de Jogos");
 
     private TableView<Jogo> tvCatalago = new TableView<>();
 
-    private Button jogoBtn = new Button();
-
     private BuscaUC buscaUC = new BuscaUC();
 
     private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
 
+//    public void setBuscaUC(BuscaUC buscaUC) {
+//        this.buscaUC = buscaUC;
+//    }
+
     public void start(Stage stage) {
 
-        adicionarDadosDemo();
+        buscaUC.adicionarDadosDemo();
+
+        // Elementos Pane e Scene
 
         BorderPane bp = new BorderPane();
 
         VBox vbM = new VBox();
         vbM.setAlignment(Pos.TOP_CENTER);
         vbM.setFillWidth(true);
-
         VBox vbC = new VBox();
 
         HBox hb = new HBox();
-
         HBox hbS = new HBox();
 
         ScrollPane sp = new ScrollPane(vbM);
@@ -76,6 +71,7 @@ public class BuscaUI extends Application {
         Scene sc = new Scene(bp, 1520, 780);
 
         // Table View
+
         TableColumn<Jogo, String> colNome = new TableColumn<>("Nome do Jogo");
         colNome.setCellValueFactory(
             itemData -> new ReadOnlyStringWrapper(itemData.getValue().getNome())
@@ -116,6 +112,7 @@ public class BuscaUI extends Application {
         colDes.setPrefWidth(275);
 
         // Margem
+
         HBox.setMargin(bBusca, new Insets(20, 0, 20, 0));
 
         //Adiciona ao Table
@@ -129,15 +126,16 @@ public class BuscaUI extends Application {
             TableRow<Jogo> linha = new TableRow<>();
             linha.setOnMouseClicked(event -> {
                 if (!linha.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                    abrirPedido(linha.getItem());
+                    buscaUC.abrirPedido(new Stage(), linha.getItem());
                 }
             });
             return linha;
         });
         tvCatalago.setItems(jogosObservaveis);
-        atualizarTabela();
+        buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis);
 
         // Adiciona Imagem
+
         Image imgSteam = new Image(getClass().getResourceAsStream("/img/SteamLogo.png"));
         ImageView imageView = new ImageView(imgSteam);
         imageView.setFitHeight(204);
@@ -148,7 +146,8 @@ public class BuscaUI extends Application {
         hb.setAlignment(Pos.CENTER_LEFT);
 
         // Verifica se é Desenvolvedor e mostra botão adicionar
-        boolean isDesenvolvedor = usuarioOuDesenvolvedor instanceof Desenvolvedora;
+
+        boolean isDesenvolvedor = buscaUC.isDesenvolvedor();
         if (isDesenvolvedor) {
             bAdicionar.setPrefSize(50, 50);
             bAdicionar.setOnAction(event -> {
@@ -159,7 +158,8 @@ public class BuscaUI extends Application {
             hb.getChildren().addAll(fBusca, bBusca);
         }
 
-        // Adiciona ao Pane       
+        // Adiciona ao Pane   
+
         tBiblioteca.setMaxWidth(Double.MAX_VALUE);
         tBiblioteca.setAlignment(Pos.CENTER);
         vbM.getChildren().add(tBiblioteca);
@@ -172,6 +172,7 @@ public class BuscaUI extends Application {
         VBox.setVgrow(tvCatalago, Priority.ALWAYS);
 
         // Lista da Biblioteca
+
         for (Jogo jogo : buscaUC.listarTodos()) {
             if (jogo.getStatusAquicicao()) {
                 Button jogoBtn = new Button(jogo.getNome());
@@ -182,6 +183,7 @@ public class BuscaUI extends Application {
         }
 
         // Alinhamento
+
         sp.setFitToHeight(true);
 
         hb.setAlignment(Pos.CENTER);
@@ -197,44 +199,17 @@ public class BuscaUI extends Application {
         bp.setRight(vbC);
 
         // Ações
-        fBusca.setPromptText("Digite o nome do jogo");
-        fBusca.setOnAction((e) -> atualizarTabela());
-        bBusca.setOnAction((e) -> atualizarTabela());
-        jogoBtn.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis"));
 
-        //Inicia
+        fBusca.setPromptText("Digite o nome do jogo");
+        fBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
+        bBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
+        bJogo.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis"));
+
+        // Inicializar
+
         stage.setScene(sc);
         stage.show();
 
-    }
-
-    private void atualizarTabela() {
-        List<Jogo> resultados = buscaUC.pesquisarJogo(fBusca.getText());
-        jogosObservaveis.setAll(resultados);
-    }
-
-    private void abrirPedido(Jogo jogo) {
-        if (usuarioOuDesenvolvedor instanceof Usuario) {
-            PedidoUI.mostrarPedido(new Stage(), jogo, (Usuario) usuarioOuDesenvolvedor);
-        }
-    }
-
-    public void setUsuarioOuDesenvolvedor(Object usuario) {
-        this.usuarioOuDesenvolvedor = usuario;
-    }
-
-    public static void mostrarBusca(Stage stage, Object usuarioOuDesenvolvedor) {
-        BuscaUI buscaUI = new BuscaUI();
-        buscaUI.setUsuarioOuDesenvolvedor(usuarioOuDesenvolvedor);
-        buscaUI.start(stage);
-    }
-
-    private void adicionarDadosDemo() {
-        buscaUC.adicionarJogo(new Jogo("Cyberpunk 2077", new Date(), 149.90, 70, "Ação RPG futurista", "PC/PS/Xbox", false, "CD Projekt", "CD Projekt"));
-        buscaUC.adicionarJogo(new Jogo("The Witcher 3", new Date(), 129.90, 50, "RPG medieval", "PC/PS/Xbox", true, "CD Projekt", "CD Projekt"));
-        buscaUC.adicionarJogo(new Jogo("Grand Theft Auto V", new Date(), 99.90, 80, "Ação e aventura", "PC/PS/Xbox", true, "Rockstar", "Rockstar"));
-        buscaUC.adicionarJogo(new Jogo("Horizon Zero Dawn", new Date(), 119.90, 60, "Ação e aventura", "PC/PS", false, "Sony", "Guerrilla Games"));
-        buscaUC.adicionarJogo(new Jogo("God of War", new Date(), 139.90, 55, "Ação e aventura mitológica", "PC/PS", false, "Sony", "Santa Monica Studio"));
     }
 
 }

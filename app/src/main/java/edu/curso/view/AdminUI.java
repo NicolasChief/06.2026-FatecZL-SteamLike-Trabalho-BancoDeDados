@@ -14,7 +14,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
@@ -27,57 +26,56 @@ import javafx.stage.Stage;
 
 public class AdminUI extends Application {
 
-    private Button bCriar = new Button();
-    private Button bAtualizar = new Button();
-    private Button bDeletar = new Button();
-    private Button bConsultar = new Button();
+    private Button bCriar = new Button("Criar");
+    private Button bAtualizar = new Button("Atualizar");
+    private Button bDeletar = new Button("Deletar");
+    private Button bConsultar = new Button("Consultar");
 
     private TextField fConsultar = new TextField();
 
     @SuppressWarnings("rawtypes")
     private TableView tvDados = new TableView<>();
 
-    private ObservableList<String> olTipo = 
-        FXCollections.observableArrayList("Jogos", "Usuarios", "Pedidos", "Desenvolvedores");
+    private ObservableList<String> olTipo = FXCollections.observableArrayList("Jogos", "Usuarios", "Pedidos", "Desenvolvedores");
 
     private ComboBox<String> cbTipos = new ComboBox<>();
 
     public void start(Stage stage){
 
         // Elementos Pane e Scene
+
         BorderPane bp = new BorderPane();
         HBox hbTop = new HBox(10);
         VBox vbCenter = new VBox();
         Scene scn = new Scene(bp, 1520, 780);
 
         // Configuração do ComboBox
+
         cbTipos.setItems(olTipo);
         cbTipos.setPrefWidth(150);
-        cbTipos.setValue("Jogos"); // Valor padrão
-
-        // Configuração dos botões
-        bCriar.setText("Criar");
-        bAtualizar.setText("Atualizar");
-        bDeletar.setText("Deletar");
-        bConsultar.setText("Consultar");
+        cbTipos.setValue("Jogos"); 
         
         fConsultar.setPromptText("Pesquisar...");
         fConsultar.setPrefWidth(200);
 
         // Configuração da TableView
+
         tvDados.setPrefHeight(700);
         tvDados.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         // Preenche a TableView inicial
+
         atualizarTabela("Jogos");
 
         // Listener para mudar a tabela ao selecionar novo tipo
+
         cbTipos.setOnAction(e -> {
             String tipoSelecionado = cbTipos.getValue();
             atualizarTabela(tipoSelecionado);
         });
 
         // Adiciona elementos ao HBox superior
+
         hbTop.getChildren().addAll(
             new Label("Tipo:"),
             cbTipos,
@@ -93,10 +91,12 @@ public class AdminUI extends Application {
         hbTop.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
 
         // Adiciona a TableView no centro
+
         vbCenter.getChildren().add(tvDados);
         vbCenter.setPadding(new Insets(10));
 
         // Define layout do BorderPane
+
         bp.setTop(hbTop);
         bp.setCenter(vbCenter);
 
