@@ -5,16 +5,6 @@ import edu.curso.model.Usuario;
 
 public class CadastrarUC {
     
-    public void cadastrar(Usuario user) {
-        bancofaketeste.lista.add(user);
-    }
 
-    public void deletar() {
-        
-    }
-
-    public void alterar() {
-        
-    }
 
 }

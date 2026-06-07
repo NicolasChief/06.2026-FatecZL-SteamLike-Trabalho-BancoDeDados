@@ -1,10 +1,6 @@
 package edu.curso.view;
 
 import edu.curso.control.AdminUC;
-import edu.curso.model.Desenvolvedora;
-import edu.curso.model.Jogo;
-import edu.curso.model.Pedido;
-import edu.curso.model.Usuario;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;

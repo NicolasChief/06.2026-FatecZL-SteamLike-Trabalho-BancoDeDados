@@ -75,7 +75,6 @@ public class PedidoUI extends Application {
             double saldoUsuario = userFinal.getSaldoConta();
             double precoJogo = jogoFinal.getPreco();
 
-            // Verificar se tem saldo suficiente
             if (saldoUsuario < precoJogo) {
                 new Alert(AlertType.WARNING, 
                     "Saldo insuficiente!\n\nPreço do jogo: R$ " + String.format("%.2f", precoJogo) +
@@ -85,14 +84,11 @@ public class PedidoUI extends Application {
             }
 
             try {
-                // Descontar o saldo
                 double novoSaldo = saldoUsuario - precoJogo;
                 userFinal.setSaldoConta(novoSaldo);
 
-                // Atualizar o saldo no banco de dados
                 new UsuarioDAOImpl().atualizarSaldo(userFinal.getNome(), novoSaldo);
 
-                // Criar registro de jogo adquirido
                 @SuppressWarnings("unused")
                 JogoAdquirido jogoAdquirido = new JogoAdquirido(new Date(), jogoFinal);
 
