@@ -49,11 +49,15 @@ FOREIGN KEY(JogoID) REFERENCES Jogo(ID),
 )
 go 
 
-Create table Desenvolvedora(
-ID int,
-Nome varchar(100)
+CREATE TABLE Desenvolvedora(
+    ID int,
+    Nome varchar(100),
+    CNPJ varchar(20),
+    Email varchar(100),
+    Senha varchar(50),
+    Telefone varchar(20),
 
-Primary key(ID)
+    PRIMARY KEY(ID)
 )
 GO
 
@@ -106,21 +110,22 @@ FOREIGN KEY (JogoID) references Jogo(ID)
 go
 
 CREATE TABLE Compra(
-ID int,
-dataCompra date,
-Usuariocod int
+    ID int PRIMARY KEY,
+    dataCompra date,
+    statusPedido varchar(30),
+    valorTotal decimal(10,2),
+    Usuariocod int,
 
-Primary key(ID),
-Foreign key(Usuariocod) references Usuario(cod)
+    FOREIGN KEY(Usuariocod)
+        REFERENCES Usuario(cod)
 )
 go
 
-Create table ItemCompra (
-ID int,
-JogoID int,
-CompraID int
-
-Primary key (ID,JogoID,CompraID)
-Foreign key (JogoID) REFERENCES Jogo(ID),
-FOREIGN KEY (CompraID) references Compra(ID)
+CREATE TABLE ItemCompra(
+    ID int,
+    JogoID int,
+    CompraID int,
+    quantidade int,
+    precoUni decimal(10,2),
+    PRIMARY KEY(ID,JogoID,CompraID)
 )
