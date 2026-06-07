@@ -95,13 +95,11 @@ public class LoginUI extends Application {
             String nome = fNome.getText().trim();
             String senha = fSenha.getText();
             
-            // Verifica se é admin
             if (nome.equalsIgnoreCase("admin") && senha.equals("admin")) {
                 AdminUI.mostrarAdmin(new Stage());
                 return;
             }
             
-            // Tenta login como Usuário primeiro
             String resultado = loginUC.logar(nome, senha);
 
             switch (resultado) {

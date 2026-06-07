@@ -1,5 +1,6 @@
 package edu.curso.view;
 
+import edu.curso.control.CadastrarUC;
 import edu.curso.model.Desenvolvedora;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -34,6 +35,8 @@ public class CadastrarDesenvolvedorUI extends Application {
 
     @Override
     public void start(Stage stage) {
+
+        CadastrarUC cadastrarUC = new CadastrarUC();
 
         // Elementos Pane e Scene
         BorderPane bp = new BorderPane();
@@ -78,35 +81,12 @@ public class CadastrarDesenvolvedorUI extends Application {
         bCancelar.setOnAction(event -> stage.close());
 
         bConfirmar.setOnAction(event -> {
-            String nome = fNome.getText().trim();
-            String cnpj = fCNPJ.getText().trim();
-            String email = fEmail.getText().trim();
-            String senha = fSenha.getText();
-            String telefone = fTel.getText().trim();
-
-            if (nome.isEmpty() || cnpj.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-                new Alert(AlertType.WARNING, "Preencha todos os campos obrigatórios.").show();
-                return;
-            }
-
-            // Validação do CNPJ (apenas verifica formato básico)
-            if (!cnpj.matches("\\d{14}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
-                new Alert(AlertType.WARNING, "CNPJ inválido. Use o formato: 12345678901234 ou 12.345.678/0001-23").show();
-                return;
-            }
-
-            // Validação do telefone
-            if (!telefone.isEmpty() && !telefone.matches("\\d{10}|\\d{11}")) {
-                new Alert(AlertType.WARNING, "Telefone inválido. Use apenas dígitos (10 ou 11 caracteres).").show();
-                return;
-            }
-
             try {
-                Desenvolvedora desenvolvedor = new Desenvolvedora(nome, cnpj);
-                // TODO: Implementar DAO para Desenvolvedor
-                System.out.println("Desenvolvedor criado: " + desenvolvedor.getNome());
+                cadastrarUC.cadastrarDesenvolvedor(fNome.getText(), fCNPJ.getText(), fEmail.getText(), fSenha.getText(), fTel.getText());
                 new Alert(AlertType.INFORMATION, "Desenvolvedor cadastrado com sucesso.").show();
                 stage.close();
+            } catch (IllegalArgumentException e) {
+                new Alert(AlertType.WARNING, e.getMessage()).show();
             } catch (RuntimeException e) {
                 new Alert(AlertType.ERROR, "Erro ao cadastrar desenvolvedor: " + e.getMessage()).show();
             }

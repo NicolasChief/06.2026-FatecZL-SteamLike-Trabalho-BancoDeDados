@@ -4,13 +4,9 @@ import edu.curso.model.Desenvolvedora;
 import edu.curso.model.Jogo;
 import edu.curso.model.Pedido;
 import edu.curso.model.Usuario;
-import edu.curso.view.AdminUI;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 public class AdminUC {
 

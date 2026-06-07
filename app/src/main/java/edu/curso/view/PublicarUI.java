@@ -60,6 +60,7 @@ public class PublicarUI extends Application {
         vb.setSpacing(20);
 
         // Adiciona ao Pane
+        
         hbNP.getChildren().addAll(tNome, fNome, tPreco, fPreco);
         hbD.getChildren().addAll(tDescricao, fDescricao);
         hbR.getChildren().addAll(tRequisitos, fRequisitos, tEspaco, fEspaco);

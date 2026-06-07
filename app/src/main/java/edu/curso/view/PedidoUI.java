@@ -36,7 +36,7 @@ public class PedidoUI extends Application {
             jogo = new Jogo(null, null, 0, 0, null, null, false, null, null);
         }
         if (user == null) {
-            user = new Usuario("Cliente", null, "cliente@teste.com", null, null, 0);
+            user = new Usuario("Cliente", null, "cliente@teste.com", null, null, 500);
         }
         
         final Jogo jogoFinal = jogo;

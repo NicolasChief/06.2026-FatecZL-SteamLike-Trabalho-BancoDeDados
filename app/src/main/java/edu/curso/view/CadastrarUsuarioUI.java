@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import edu.curso.banco.UsuarioDAOImpl;
+import edu.curso.control.CadastrarUC;
 import edu.curso.model.Usuario;
 
 import javafx.application.Application;
@@ -41,6 +42,8 @@ public class CadastrarUsuarioUI extends Application {
 
     @Override
     public void start(Stage stage) {
+
+        CadastrarUC cadastrarUC = new CadastrarUC();
 
         // Elementos Pane e Scene
 
@@ -86,30 +89,12 @@ public class CadastrarUsuarioUI extends Application {
         bCancelar.setOnAction(event -> stage.close());
 
         bConfirmar.setOnAction(event -> {
-            String nome = fNome.getText().trim();
-            LocalDate dataSelecionada = fData.getValue();
-            String email = fEmail.getText().trim();
-            String senha = fSenha.getText();
-            String telefone = fTel.getText().trim();
-
-            if (nome.isEmpty() || dataSelecionada == null || email.isEmpty() || senha.isEmpty()) {
-                new Alert(AlertType.WARNING, "Preencha todos os campos obrigatórios. Data também é obrigatória.").show();
-                return;
-            }
-
-            Date dataNasc = Date.from(dataSelecionada.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-            // Validação do telefone
-            if (!telefone.isEmpty() && !telefone.matches("\\d{10}|\\d{11}")) {
-                new Alert(AlertType.WARNING, "Telefone inválido. Use apenas dígitos (10 ou 11 caracteres).").show();
-                return;
-            }
-
-            Usuario usuario = new Usuario(nome, dataNasc, email, senha, telefone, 0.0);
             try {
-                new UsuarioDAOImpl().cadastrar(usuario);
+                cadastrarUC.cadastrarUsuario(fNome.getText(), fData.getValue(), fEmail.getText(), fSenha.getText(), fTel.getText());
                 new Alert(AlertType.INFORMATION, "Usuário cadastrado com sucesso.").show();
                 stage.close();
+            } catch (IllegalArgumentException e) {
+                new Alert(AlertType.WARNING, e.getMessage()).show();
             } catch (RuntimeException e) {
                 new Alert(AlertType.ERROR, "Erro ao cadastrar usuário: " + e.getMessage()).show();
             }
