@@ -47,13 +47,6 @@ public class CadastrarUC {
 			throw new IllegalArgumentException("Senha é obrigatória");
 		}
 
-		if (!cnpj.matches("\\\\d{14}|\\\\d{2}\\\\.\\\\d{3}\\\\.\\\\d{3}\\\\/\\\\d{4}-\\\\d{2}")) {
-			// tentar aceitar também formato simplificado sem máscara
-			if (!cnpj.matches("\\d{14}")) {
-				throw new IllegalArgumentException("CNPJ inválido. Use o formato: 12345678901234 ou 12.345.678/0001-23");
-			}
-		}
-
 		if (telefone != null && !telefone.isEmpty() && !telefone.matches("\\d{10}|\\d{11}")) {
 			throw new IllegalArgumentException("Telefone inválido. Use apenas dígitos (10 ou 11 caracteres).");
 		}

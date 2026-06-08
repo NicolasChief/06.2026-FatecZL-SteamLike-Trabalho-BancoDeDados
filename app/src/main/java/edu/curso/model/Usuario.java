@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Usuario {
 
+    private int cod;
     private String nome;
     private Date dataNasc;
     private String email;
@@ -12,12 +13,24 @@ public class Usuario {
     private double saldoConta;
 
     public Usuario(String nome, Date dataNasc, String email, String senha, String telefone, double saldoConta) {
+        this(0, nome, dataNasc, email, senha, telefone, saldoConta);
+    }
+    
+    public Usuario(int cod, String nome, Date dataNasc, String email, String senha, String telefone, double saldoConta) {
+        this.cod = cod;
         this.nome = nome;
         this.dataNasc = dataNasc;
         this.email = email;
         this.senha = senha;
         this.telefone = telefone;
         this.saldoConta = saldoConta;
+    }
+
+    public int getCod() {
+        return cod;
+    }
+    public void setCod(int cod) {
+        this.cod = cod;
     }
 
     public String getNome() {

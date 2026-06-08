@@ -169,6 +169,12 @@ public List<Pedido> consultar() {
                     "valorTotal"
                 )
             );
+            
+            pedido.setDataCompra(
+                rs.getDate(
+                    "dataCompra"
+                )
+            );
 
             lista.add(pedido);
         }

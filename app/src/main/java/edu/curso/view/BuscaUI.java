@@ -1,6 +1,7 @@
 package edu.curso.view;
 
 import edu.curso.model.Jogo;
+import edu.curso.model.Desenvolvedora;
 import edu.curso.control.BuscaUC;
 
 import javafx.application.Application;
@@ -44,16 +45,18 @@ public class BuscaUI extends Application {
     private BuscaUC buscaUC = new BuscaUC();
 
     private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
+    
+    private VBox vbM; // Adicionar referência para a biblioteca
 
     public void start(Stage stage) {
 
-        buscaUC.adicionarDadosDemo();
+//        buscaUC.adicionarDadosDemo();
 
         // Elementos Pane e Scene
 
         BorderPane bp = new BorderPane();
 
-        VBox vbM = new VBox();
+        vbM = new VBox();
         vbM.setAlignment(Pos.TOP_CENTER);
         vbM.setFillWidth(true);
         VBox vbC = new VBox();
@@ -88,6 +91,10 @@ public class BuscaUI extends Application {
         colDes.setCellValueFactory(
             itemData -> new ReadOnlyStringWrapper(itemData.getValue().getDesenvolvedora())
         );
+        TableColumn<Jogo, Double> colEspaco = new TableColumn<>("Espaço (GB)");
+        colEspaco.setCellValueFactory(
+            itemData -> new ReadOnlyDoubleWrapper(itemData.getValue().getEspacoArmazenamento()).asObject()
+        );
 
         // Tamanho
 
@@ -106,10 +113,12 @@ public class BuscaUI extends Application {
         colStatus.setPrefWidth(150);
         colPub.setPrefWidth(275);
         colDes.setPrefWidth(275);
+        colEspaco.setPrefWidth(150);
 
         // Margem
 
         HBox.setMargin(bBusca, new Insets(20, 0, 20, 0));
+        HBox.setMargin(bAdicionar, new Insets(20, 0, 20, 0));
 
         //Adiciona ao Table
 
@@ -118,6 +127,7 @@ public class BuscaUI extends Application {
         tvCatalago.getColumns().add(colStatus);
         tvCatalago.getColumns().add(colPub);
         tvCatalago.getColumns().add(colDes);
+        tvCatalago.getColumns().add(colEspaco);
         tvCatalago.setRowFactory(table -> {
             TableRow<Jogo> linha = new TableRow<>();
             linha.setOnMouseClicked(event -> {
@@ -129,6 +139,9 @@ public class BuscaUI extends Application {
         });
         tvCatalago.setItems(jogosObservaveis);
         buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis);
+        
+        // Método para recarregar a biblioteca
+        atualizarBiblioteca(vbM, buscaUC);
 
         // Adiciona Imagem
 
@@ -145,9 +158,11 @@ public class BuscaUI extends Application {
 
         boolean isDesenvolvedor = buscaUC.isDesenvolvedor();
         if (isDesenvolvedor) {
-            bAdicionar.setPrefSize(50, 50);
             bAdicionar.setOnAction(event -> {
-                new PublicarUI().start(new Stage());
+                PublicarUI publicarUI = new PublicarUI();
+                publicarUI.setBuscaUC(buscaUC);
+                publicarUI.setDesenvolvedoraLogada((Desenvolvedora) buscaUC.getUsuarioOuDesenvolvedor());
+                publicarUI.start(new Stage());
             });
             hb.getChildren().addAll(fBusca, bBusca, bAdicionar);
         } else {
@@ -207,9 +222,30 @@ public class BuscaUI extends Application {
         stage.show();
 
     }
+    
+    private void atualizarBiblioteca(VBox vbM, BuscaUC buscaUC) {
+        // Limpar biblioteca anterior
+        vbM.getChildren().removeIf(node -> node instanceof Button);
+        
+        // Recarregar biblioteca com jogos adquiridos
+        for (Jogo jogo : buscaUC.listarTodos()) {
+            if (jogo.getStatusAquicicao()) {
+                Button jogoBtn = new Button(jogo.getNome());
+                jogoBtn.setMaxWidth(Double.MAX_VALUE);
+                jogoBtn.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis").show());
+                vbM.getChildren().add(jogoBtn);
+            }
+        }
+    }
 
     public void setBuscaUC(BuscaUC buscaUC) {
         this.buscaUC = buscaUC;
+    }
+    
+    public void recarregarBiblioteca() {
+        if (vbM != null) {
+            atualizarBiblioteca(vbM, buscaUC);
+        }
     }
 
 }

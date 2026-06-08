@@ -3,10 +3,13 @@ package edu.curso.view;
 import java.util.Date;
 
 import edu.curso.banco.UsuarioDAOImpl;
+import edu.curso.banco.JogoDAOImpl;
+import edu.curso.control.BuscaUC;
 import edu.curso.model.Jogo;
 import edu.curso.model.JogoAdquirido;
 import edu.curso.model.Usuario;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,10 +28,14 @@ public class PedidoUI extends Application {
     public void start(Stage stage){
         Jogo jogo = new Jogo(null, null, 0, 0, null, null, false, null, null);
         Usuario user = new Usuario("Cliente", null, "cliente@teste.com", null, null, 0);
-        mostrarPedido(stage, jogo, user);
+        mostrarPedido(stage, jogo, user, null);
     }
 
     public static void mostrarPedido(Stage stage, Jogo jogoParam, Usuario userParam) {
+        mostrarPedido(stage, jogoParam, userParam, null);
+    }
+
+    public static void mostrarPedido(Stage stage, Jogo jogoParam, Usuario userParam, BuscaUC buscaUC) {
         Jogo jogo = jogoParam;
         Usuario user = userParam;
         
@@ -41,6 +48,7 @@ public class PedidoUI extends Application {
         
         final Jogo jogoFinal = jogo;
         final Usuario userFinal = user;
+        final BuscaUC buscaUCFinal = buscaUC;
 
         Label tTitulo = new Label("Detalhes da Compra");
         tTitulo.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
@@ -84,10 +92,29 @@ public class PedidoUI extends Application {
             }
 
             try {
+                System.out.println("=== Processando Compra ===");
+                System.out.println("Jogo: " + jogoFinal.getNome());
+                System.out.println("Usuário: " + userFinal.getNome());
+                System.out.println("Preço: " + precoJogo);
+                System.out.println("Saldo anterior: " + saldoUsuario);
+                
                 double novoSaldo = saldoUsuario - precoJogo;
                 userFinal.setSaldoConta(novoSaldo);
 
+                // Atualizar saldo no banco
                 new UsuarioDAOImpl().atualizarSaldo(userFinal.getNome(), novoSaldo);
+                System.out.println("Saldo atualizado no banco: " + novoSaldo);
+
+                // Registrar compra no banco
+                int usuarioID = userFinal.getCod();
+                if (usuarioID > 0) {
+                    new JogoDAOImpl().registrarCompra(usuarioID);
+                    System.out.println("Compra registrada no banco para usuário: " + usuarioID);
+                }
+
+                // Marcar jogo como adquirido
+                jogoFinal.setStatusAquicicao(true);
+                System.out.println("Jogo marcado como adquirido");
 
                 @SuppressWarnings("unused")
                 JogoAdquirido jogoAdquirido = new JogoAdquirido(new Date(), jogoFinal);
@@ -98,8 +125,18 @@ public class PedidoUI extends Application {
                     "\nValor pago: R$ " + String.format("%.2f", precoJogo) +
                     "\nNovo saldo: R$ " + String.format("%.2f", novoSaldo)).show();
 
+                System.out.println("Compra finalizada com sucesso");
+                
+                // Recarregar a biblioteca se BuscaUC foi passado
+                if (buscaUCFinal != null) {
+                    System.out.println("Recarregando dados da biblioteca...");
+                    buscaUCFinal.atualizarTabela("", FXCollections.observableArrayList());
+                }
+                
                 stage.close();
             } catch (RuntimeException e) {
+                System.out.println("Erro ao processar compra: " + e.getMessage());
+                e.printStackTrace();
                 new Alert(AlertType.ERROR, 
                     "Erro ao processar a compra: " + e.getMessage()).show();
             }

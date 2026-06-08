@@ -6,8 +6,7 @@ import edu.curso.model.Jogo;
 public class PublicarUC {
 
     public void publicarJogo(Jogo jogo) {
-
-        JogoDAOImpl.jogos.add(jogo);  //substituir
+        new JogoDAOImpl().cadastrar(jogo);
     }
 
     public void deslistarJogo(String nome) {

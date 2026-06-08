@@ -174,6 +174,7 @@ public class DesenvolvedorDAOImpl implements DesenvolvedorDAO  {
                 lista.add(d);
             }
 
+            System.out.println("DesenvolvedorDAOImpl.consultarPorNome: retornou " + lista.size() + " desenvolvedores.");
             rs.close();
             stm.close();
 

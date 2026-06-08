@@ -4,7 +4,7 @@ use Jogo
 go
 
 Create table jogo(
-ID int Check(ID>0),
+ID int IDENTITY(1,1) Check(ID>0),
 Nome varchar(50),
 dataLancamento date,
 preco decimal(6,2),
@@ -50,7 +50,7 @@ FOREIGN KEY(JogoID) REFERENCES Jogo(ID),
 go 
 
 CREATE TABLE Desenvolvedora(
-    ID int,
+    ID int IDENTITY(1,1),
     Nome varchar(100),
     CNPJ varchar(20),
     Email varchar(100),
@@ -65,8 +65,8 @@ create table Desenvolvedora_Jogo (
 DesenvolvedoraID int,
 JogoID int
 
-Primary key(DesenvolvedoraID,JogoID)
-FOREIGN KEY (DesenvolvedoraID) references Jogo(ID),
+Primary key(DesenvolvedoraID,JogoID),
+FOREIGN KEY (DesenvolvedoraID) references Desenvolvedora(ID),
 FOREIGN KEY (JogoID) References Jogo(ID)
 )
 go

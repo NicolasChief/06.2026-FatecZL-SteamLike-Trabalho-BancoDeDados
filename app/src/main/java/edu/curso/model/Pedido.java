@@ -1,12 +1,14 @@
 package edu.curso.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Pedido {
 
     private String statusPedido;
     private double valorTotal;
+    private Date dataCompra;
     private List<ItemPedido> itens = new ArrayList<>();
 
     public Pedido(String statusPedido) {
@@ -40,6 +42,13 @@ public class Pedido {
 
     public void calcularPreco() {
         this.valorTotal = itens.stream().mapToDouble(ItemPedido::calcularTotal).sum();
+    }
+
+    public Date getDataCompra() {
+        return dataCompra;
+    }
+    public void setDataCompra(Date dataCompra) {
+        this.dataCompra = dataCompra;
     }
 
 }

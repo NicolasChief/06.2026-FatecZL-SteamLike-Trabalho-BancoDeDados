@@ -4,9 +4,15 @@ import edu.curso.model.Desenvolvedora;
 import edu.curso.model.Jogo;
 import edu.curso.model.Pedido;
 import edu.curso.model.Usuario;
+import edu.curso.banco.JogoDAOImpl;
+import edu.curso.banco.UsuarioDAOImpl;
+import edu.curso.banco.DesenvolvedorDAOImpl;
+import edu.curso.banco.PedidoDAOImpl;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import java.util.List;
 
 public class AdminUC {
 
@@ -46,8 +52,15 @@ public class AdminUC {
 
         TableColumn<Jogo, Double> colEspaco = new TableColumn<>("Espaço (GB)");
         colEspaco.setCellValueFactory(new PropertyValueFactory<>("espacoArmazenamento"));
+        
+        TableColumn<Jogo, String> colDescricao = new TableColumn<>("Descrição");
+        colDescricao.setCellValueFactory(new PropertyValueFactory<>("descricaoJogo"));
 
-        tvDados.getColumns().addAll(colNome, colDesenvolvedor, colPublicadora, colPreco, colEspaco);
+        tvDados.getColumns().addAll(colNome, colDesenvolvedor, colPublicadora, colPreco, colEspaco, colDescricao);
+
+        // preencher dados a partir do banco
+        List<Jogo> jogos = new JogoDAOImpl().consultarPorNome("");
+        tvDados.setItems(FXCollections.observableArrayList(jogos));
 
     }
 
@@ -55,6 +68,9 @@ public class AdminUC {
     private void criarTabelaUsuarios(TableView tvDados) {
         TableColumn<Usuario, String> colNome = new TableColumn<>("Nome");
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        
+        TableColumn<Usuario, java.util.Date> colDataNasc = new TableColumn<>("Data de Nascimento");
+        colDataNasc.setCellValueFactory(new PropertyValueFactory<>("dataNasc"));
 
         TableColumn<Usuario, String> colEmail = new TableColumn<>("Email");
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -65,7 +81,11 @@ public class AdminUC {
         TableColumn<Usuario, Double> colSaldo = new TableColumn<>("Saldo");
         colSaldo.setCellValueFactory(new PropertyValueFactory<>("saldoConta"));
 
-        tvDados.getColumns().addAll(colNome, colEmail, colTelefone, colSaldo);
+        tvDados.getColumns().addAll(colNome, colDataNasc, colEmail, colTelefone, colSaldo);
+
+        // preencher dados a partir do banco
+        List<Usuario> usuarios = new UsuarioDAOImpl().consultarPorNome("");
+        tvDados.setItems(FXCollections.observableArrayList(usuarios));
 
     }
 
@@ -76,8 +96,15 @@ public class AdminUC {
 
         TableColumn<Pedido, Double> colValor = new TableColumn<>("Valor Total");
         colValor.setCellValueFactory(new PropertyValueFactory<>("valorTotal"));
+        
+        TableColumn<Pedido, java.util.Date> colDataCompra = new TableColumn<>("Data da Compra");
+        colDataCompra.setCellValueFactory(new PropertyValueFactory<>("dataCompra"));
 
-        tvDados.getColumns().addAll(colStatus, colValor);
+        tvDados.getColumns().addAll(colStatus, colValor, colDataCompra);
+
+        // preencher dados a partir do banco
+        List<Pedido> pedidos = new PedidoDAOImpl().consultar();
+        tvDados.setItems(FXCollections.observableArrayList(pedidos));
 
     }
 
@@ -90,6 +117,11 @@ public class AdminUC {
         colCNPJ.setCellValueFactory(new PropertyValueFactory<>("cnpjcpf"));
 
         tvDados.getColumns().addAll(colNome, colCNPJ);
+
+        // preencher dados a partir do banco
+        List<Desenvolvedora> devs = new DesenvolvedorDAOImpl().consultarPorNome("");
+        System.out.println("AdminUC: desenvolvedores recuperados = " + devs.size());
+        tvDados.setItems(FXCollections.observableArrayList(devs));
 
     }
 
