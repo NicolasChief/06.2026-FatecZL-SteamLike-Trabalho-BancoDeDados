@@ -3,6 +3,7 @@ package edu.curso.control;
 import java.time.ZoneId;
 import java.util.Date;
 
+import edu.curso.banco.DesenvolvedorDAOImpl;
 import edu.curso.banco.UsuarioDAOImpl;
 import edu.curso.model.Desenvolvedora;
 import edu.curso.model.Usuario;
@@ -52,7 +53,10 @@ public class CadastrarUC {
 		}
 
 		Desenvolvedora desenvolvedor = new Desenvolvedora(nome.trim(), cnpj.trim());
-		System.out.println("Desenvolvedora criada: " + desenvolvedor.getNome());
+		desenvolvedor.setEmail(email.trim());
+		desenvolvedor.setSenha(senha);
+		desenvolvedor.setTelefone((telefone == null ? null : telefone.trim()));
+		new DesenvolvedorDAOImpl().cadastrar(desenvolvedor);
 	}
 
 }

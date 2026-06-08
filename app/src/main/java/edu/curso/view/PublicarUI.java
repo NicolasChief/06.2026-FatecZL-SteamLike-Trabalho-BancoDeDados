@@ -105,7 +105,6 @@ public class PublicarUI extends Application {
         rightContainer.getChildren().add(vb);
         bp.setRight(rightContainer);
 
-        // Left side: show PH.png
         VBox leftContainer = new VBox();
         leftContainer.setAlignment(Pos.CENTER);
         leftContainer.prefWidthProperty().bind(scn.widthProperty().divide(2));
@@ -141,6 +140,7 @@ public class PublicarUI extends Application {
             // show placeholder text if image not found
             System.out.println("Imagem PH.png não carregada — verifique o caminho.");
         }
+        
         imgView.setPreserveRatio(true);
         imgView.setFitWidth(500);
         imgView.setFitHeight(680);

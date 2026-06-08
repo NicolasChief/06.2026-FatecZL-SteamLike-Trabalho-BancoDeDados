@@ -60,8 +60,6 @@ public class AdminUI extends Application {
         tvDados.setPrefHeight(700);
         tvDados.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        // Preenche a TableView inicial
-
         AdminUC.atualizarTabela("Jogos", tvDados);
 
         // Listener para mudar a tabela ao selecionar novo tipo
@@ -73,16 +71,7 @@ public class AdminUI extends Application {
 
         // Adiciona elementos ao HBox superior
 
-        hbTop.getChildren().addAll(
-            new Label("Tipo:"),
-            cbTipos,
-            bCriar, 
-            bAtualizar, 
-            bDeletar,
-            new Label("Pesquisar:"),
-            fConsultar, 
-            bConsultar
-        );
+        hbTop.getChildren().addAll(new Label("Tipo:"), cbTipos, bCriar, bAtualizar, bDeletar, new Label("Pesquisar:"), fConsultar, bConsultar);
         hbTop.setPadding(new Insets(10));
         hbTop.setAlignment(Pos.CENTER_LEFT);
         hbTop.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");

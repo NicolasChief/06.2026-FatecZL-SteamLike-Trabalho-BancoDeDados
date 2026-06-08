@@ -50,8 +50,6 @@ public class BuscaUI extends Application {
 
     public void start(Stage stage) {
 
-//        buscaUC.adicionarDadosDemo();
-
         // Elementos Pane e Scene
 
         BorderPane bp = new BorderPane();
@@ -213,7 +211,7 @@ public class BuscaUI extends Application {
 
         fBusca.setPromptText("Digite o nome do jogo");
         fBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
-        bBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
+//        bBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
         bJogo.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis"));
 
         // Inicializar

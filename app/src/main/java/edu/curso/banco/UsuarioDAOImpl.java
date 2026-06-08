@@ -69,36 +69,38 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             throw new RuntimeException("Sem conexão com o banco de dados. Verifique driver, servidor e credenciais.");
         }
         try {
-            String nextIdSql = "SELECT ISNULL(MAX(cod), 0) + 1 FROM Usuario";
-            PreparedStatement nextIdStm = con.prepareStatement(nextIdSql);
-            ResultSet rs = nextIdStm.executeQuery();
-            long id = 1;
-            if (rs.next()) {
-                id = rs.getLong(1);
-            }
-            rs.close();
-            nextIdStm.close();
-
-            String sql = "INSERT INTO Usuario (cod, Nome, datanasc, email, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement stm = con.prepareStatement(sql);
-            stm.setLong(1, id);
-            stm.setString(2, usuario.getNome());
-            stm.setDate(3, new java.sql.Date(usuario.getDataNasc().getTime()));
-            stm.setString(4, usuario.getEmail());
-            stm.setString(5, usuario.getSenha());
+            String sql = "INSERT INTO Usuario (Nome, datanasc, email, senha, telefone) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement stm = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            stm.setString(1, usuario.getNome());
+            stm.setDate(2, new java.sql.Date(usuario.getDataNasc().getTime()));
+            stm.setString(3, usuario.getEmail());
+            stm.setString(4, usuario.getSenha());
             String tel = usuario.getTelefone();
             if (tel == null || tel.trim().isEmpty()) {
-                stm.setNull(6, java.sql.Types.VARCHAR);
+                stm.setNull(5, java.sql.Types.VARCHAR);
                 System.out.println("Inserindo telefone como NULL (campo vazio no formulário)");
             } else {
-                stm.setString(6, tel);
+                stm.setString(5, tel);
             }
-            stm.executeUpdate();
+
+            int rows = stm.executeUpdate();
+            ResultSet gen = stm.getGeneratedKeys();
+            if (gen.next()) {
+                usuario.setCod(gen.getInt(1));
+            }
+            gen.close();
             stm.close();
+
+            if (rows <= 0) {
+                throw new RuntimeException("Nenhuma linha inserida ao cadastrar usuário");
+            }
+
+            usuario.setSaldoConta(500.0);
             System.out.println("Comando executado com sucesso");
         } catch (SQLException e) {
             System.out.println("Erro ao cadastrar usuario");
             e.printStackTrace();
+            throw new RuntimeException("Erro ao cadastrar usuario: " + e.getMessage(), e);
         }
     }
 
@@ -106,19 +108,20 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     public List<Usuario> consultarPorNome(String nome) {
         List<Usuario> lista = new ArrayList<>();
         try {
-            String sql = "SELECT Nome, datanasc, email, senha, telefone FROM Usuario WHERE Nome LIKE ?";
+            String sql = "SELECT cod, Nome, datanasc, email, senha, telefone FROM Usuario WHERE Nome LIKE ?";
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setString(1, "%" + nome + "%");
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
+                int cod = rs.getInt("cod");
                 String usuarioNome = rs.getString("Nome");
                 Date dataNasc = rs.getDate("datanasc");
                 String email = rs.getString("email");
                 String senha = rs.getString("senha");
                 String telefone = rs.getString("telefone");
-
-                Usuario usuario = new Usuario(usuarioNome, dataNasc, email, senha, telefone, 0.0);
+                double saldo = 500.0;
+                Usuario usuario = new Usuario(cod, usuarioNome, dataNasc, email, senha, telefone, saldo);
                 lista.add(usuario);
             }
             rs.close();
@@ -168,7 +171,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     public void atualizarSaldo(String nomeUsuario, double novoSaldo) {
         try {
-            String sql = "UPDATE Usuario SET saldoConta = ? WHERE Nome = ?";
+            String sql = "UPDATE Usuario SET saldo = ? WHERE Nome = ?";
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setDouble(1, novoSaldo);
             stm.setString(2, nomeUsuario);

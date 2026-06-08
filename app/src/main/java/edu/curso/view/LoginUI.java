@@ -91,7 +91,8 @@ public class LoginUI extends Application {
         vb.setAlignment(Pos.CENTER);
 
         // Ações
-        bEntrar.setOnAction(event -> {
+
+        bEntrar.setOnAction(event -> { 
             String nome = fNome.getText().trim();
             String senha = fSenha.getText();
             
@@ -101,10 +102,12 @@ public class LoginUI extends Application {
             }
             
             String resultado = loginUC.logar(nome, senha);
+            System.out.println("Login attempt -> nome=" + nome + ", resultado=" + resultado);
 
             switch (resultado) {
                 case "LOGIN_OK":
                     Usuario usuario = loginUC.autenticar(nome, senha);
+                    System.out.println("autenticar() returned: " + usuario);
                     if (usuario != null) {
                         BuscaUC.mostrarBusca(new Stage(), usuario);
                         stage.close();
@@ -116,9 +119,12 @@ public class LoginUI extends Application {
                     new Alert(AlertType.WARNING, "Senha incorreta. Tente novamente.").show();
                     break;
                 case "USUARIO_NAO_EXISTE":
-                    Desenvolvedora dev = new Desenvolvedora(nome, ""); // CNPJ padrão
-                    BuscaUC.mostrarBusca(new Stage(), dev);
-                    stage.close();
+                    // Usuário não existe: abrir tela de cadastro em vez de tratar como desenvolvedor
+                    try {
+                        new CadastroTipoUI().start(new Stage());
+                    } catch (Exception e) {
+                        new Alert(AlertType.WARNING, "Usuário não encontrado. Por favor, cadastre-se.").show();
+                    }
                     break;
                 case "ERRO_BD":
                     new Alert(AlertType.ERROR, "Erro ao acessar o banco de dados. Verifique a conexão.").show();

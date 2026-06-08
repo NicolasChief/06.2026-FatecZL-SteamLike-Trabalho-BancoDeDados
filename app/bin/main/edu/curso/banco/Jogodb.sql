@@ -17,16 +17,14 @@ PRIMARY KEY(ID)
 go
 
 CREATE TABLE Usuario(
-cod int,
-Nome varchar(50),
-datanasc date ,
-email varchar(100),
-senha varchar(20),
-telefone varchar(11) check(len(telefone)=10 or len(telefone) = 11),
-saldo decimal(7, 2) DEFAULT(500)
-
-primary key(cod)
-
+    cod int IDENTITY(1,1),
+    Nome varchar(50),
+    datanasc date ,
+    email varchar(100),
+    senha varchar(20),
+    telefone varchar(11) check(len(telefone)=10 or len(telefone) = 11),
+    saldo decimal(7, 2) DEFAULT(500),
+    primary key(cod)
 )
 go
 
