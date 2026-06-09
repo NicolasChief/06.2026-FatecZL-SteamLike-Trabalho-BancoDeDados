@@ -33,11 +33,14 @@ public class AdminUI extends Application {
 
     private ObservableList<String> olTipo = FXCollections.observableArrayList("Jogos", "Usuarios", "Pedidos", "Desenvolvedores");
 
+    private ObservableList<String> olQuerys = FXCollections.observableArrayList("Total de jogos por gênero, apenas gêneros com mais de 1 jogo", "Média, maior e menor preço dos jogos, excluindo gratuitos", "Saldo dos usuários classificado em faixas", "Jogos lançados nos últimos 10 anos com espaço acima da média", "Total gasto por usuário em compras concluídas", "Quantidade de jogos por desenvolvedora, com nome da desenvolvedora", "Todos os jogos com seus gêneros e desenvolvedoras", "Biblioteca de cada usuário com os jogos que possui", "Histórico de compras detalhado por usuário", "Jogos com publicadora e gênero", "Usuários e seus jogos comprados vs jogos na biblioteca", "Desenvolvedoras que publicam seus próprios jogos");
+
     private ComboBox<String> cbTipos = new ComboBox<>();
+    private ComboBox<String> cbQuerys = new ComboBox<>();
 
     public void start(Stage stage){
 
-        AdminUC AdminUC = new AdminUC();
+        AdminUC adminUC = new AdminUC();
 
         // Elementos Pane e Scene
 
@@ -52,6 +55,10 @@ public class AdminUI extends Application {
         cbTipos.setPrefWidth(150);
         cbTipos.setValue("Jogos"); 
         
+        cbQuerys.setItems(olQuerys);
+        cbQuerys.setPrefWidth(430);
+        cbQuerys.setPromptText("Selecione um relatório");
+
         fConsultar.setPromptText("Pesquisar...");
         fConsultar.setPrefWidth(200);
 
@@ -60,18 +67,33 @@ public class AdminUI extends Application {
         tvDados.setPrefHeight(700);
         tvDados.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        AdminUC.atualizarTabela("Jogos", tvDados);
+        adminUC.atualizarTabela("Jogos", tvDados);
 
         // Listener para mudar a tabela ao selecionar novo tipo
 
         cbTipos.setOnAction(e -> {
             String tipoSelecionado = cbTipos.getValue();
-            AdminUC.atualizarTabela(tipoSelecionado, tvDados);
+            adminUC.atualizarTabela(tipoSelecionado, tvDados);
+        });
+
+        bConsultar.setOnAction(e -> {
+            String queryDescricao = cbQuerys.getValue();
+            if (queryDescricao == null || queryDescricao.isEmpty()) {
+                new Alert(AlertType.WARNING, "Selecione uma query antes de consultar.").show();
+                return;
+            }
+            int linhas = adminUC.executarConsultaRelatorio(queryDescricao, tvDados);
+            if (linhas >= 0) {
+                String mensagem = linhas > 0 ? "Consulta executada com sucesso: " + linhas + " linhas retornadas." : "Consulta executada, nenhum resultado retornado.";
+                new Alert(AlertType.INFORMATION, mensagem).show();
+            } else {
+                new Alert(AlertType.ERROR, "Erro ao executar a consulta. Veja o console para detalhes.").show();
+            }
         });
 
         // Adiciona elementos ao HBox superior
 
-        hbTop.getChildren().addAll(new Label("Tipo:"), cbTipos, bCriar, bAtualizar, bDeletar, new Label("Pesquisar:"), fConsultar, bConsultar);
+        hbTop.getChildren().addAll(new Label("Tipo:"), cbTipos, bCriar, bAtualizar, bDeletar, new Label("Pesquisar:"), fConsultar, bConsultar, cbQuerys);
         hbTop.setPadding(new Insets(10));
         hbTop.setAlignment(Pos.CENTER_LEFT);
         hbTop.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
