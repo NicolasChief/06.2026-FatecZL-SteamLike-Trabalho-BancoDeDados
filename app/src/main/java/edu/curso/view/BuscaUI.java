@@ -218,7 +218,6 @@ public class BuscaUI extends Application {
 
         fBusca.setPromptText("Digite o nome do jogo");
         fBusca.setOnAction((e) -> getBuscaUC().atualizarTabela(fBusca.getText(), jogosObservaveis));
-        //        bBusca.setOnAction((e) -> getBuscaUC().atualizarTabela(fBusca.getText(), jogosObservaveis));
         bJogo.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis"));
 
         // Inicializar
@@ -229,7 +228,6 @@ public class BuscaUI extends Application {
     }
     
     private void atualizarBiblioteca(VBox vbM, BuscaUC buscaUC) {
-        // Recarregar biblioteca com jogos adquiridos
         for (Jogo jogo : buscaUC.listarTodos()) {
             if (jogo.getStatusAquicicao()) {
                 Button jogoBtn = new Button(jogo.getNome());
