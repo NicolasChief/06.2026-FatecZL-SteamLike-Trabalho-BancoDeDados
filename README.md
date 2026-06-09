@@ -6,6 +6,6 @@ OBS.: ALGUMAS OPERAÇÕES PODEM NÃO FUNCIONAR DA MANEIRA ESPERADA
 
 admin / admin EM LOGIN / SENHA => ABRE O PAINEL DE CONTROLE MASTER, ONDE É POSSÍVEL EXECUTAR AS CONSULTAS SQL (PRECIONANDO E ESCOLHENDO NA BARRA LATERAL + CONSULTAR)
 
-![ENGENHARIA REALIZADA](https://drive.google.com/file/d/1nIm7qoNYKpP8rQGYfoAv3rf3xHba36DD/view?usp=drive_link)
+ENGENHARIA REALIZADA => https://drive.google.com/file/d/1nIm7qoNYKpP8rQGYfoAv3rf3xHba36DD/view?usp=drive_link
 
-
+MODELAGEM REALIZADA => https://drive.google.com/file/d/1F_MduMa5XYvBEM81d9ujGB39PzPUdWo-/view?usp=drive_link
