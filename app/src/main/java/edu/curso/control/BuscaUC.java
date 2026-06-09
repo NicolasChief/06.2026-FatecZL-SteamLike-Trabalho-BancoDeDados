@@ -16,21 +16,25 @@ public class BuscaUC {
 
     private List<Jogo> catalogo = new ArrayList<>();
     private Object usuarioOuDesenvolvedor;
+    private boolean carregado = false;
 
     public BuscaUC() {
-        // Carregar jogos do banco ao inicializar
-        carregarJogosDoBank();
+        // Não carregar jogos no construtor - usar lazy loading
     }
 
     private void carregarJogosDoBank() {
+        if (carregado) return; // Evitar múltiplas carregamentos
+        
         try {
             System.out.println("BuscaUC: Carregando jogos do banco...");
             List<Jogo> jogosDoBank = new JogoDAOImpl().consultarPorNome("");
             catalogo.addAll(jogosDoBank);
+            carregado = true;
             System.out.println("BuscaUC: " + catalogo.size() + " jogos carregados do banco");
         } catch (Exception e) {
             System.out.println("BuscaUC: Erro ao carregar jogos do banco");
             e.printStackTrace();
+            carregado = true; // Marcar como tentado mesmo com erro
         }
     }
 
@@ -39,6 +43,9 @@ public class BuscaUC {
     }
 
     public List<Jogo> listarTodos() {
+        if (!carregado) {
+            carregarJogosDoBank();
+        }
         return catalogo;
     }
 

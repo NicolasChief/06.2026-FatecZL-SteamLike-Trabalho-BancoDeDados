@@ -42,7 +42,14 @@ public class BuscaUI extends Application {
 
     private TableView<Jogo> tvCatalago = new TableView<>();
 
-    private BuscaUC buscaUC = new BuscaUC();
+    private BuscaUC buscaUC;
+    
+    private BuscaUC getBuscaUC() {
+        if (buscaUC == null) {
+            buscaUC = new BuscaUC();
+        }
+        return buscaUC;
+    }
 
     private ObservableList<Jogo> jogosObservaveis = FXCollections.observableArrayList();
     
@@ -130,16 +137,16 @@ public class BuscaUI extends Application {
             TableRow<Jogo> linha = new TableRow<>();
             linha.setOnMouseClicked(event -> {
                 if (!linha.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                    buscaUC.abrirPedido(new Stage(), linha.getItem());
+                    getBuscaUC().abrirPedido(new Stage(), linha.getItem());
                 }
             });
             return linha;
         });
         tvCatalago.setItems(jogosObservaveis);
-        buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis);
+        getBuscaUC().atualizarTabela(fBusca.getText(), jogosObservaveis);
         
         // Método para recarregar a biblioteca
-        atualizarBiblioteca(vbM, buscaUC);
+        atualizarBiblioteca(vbM, getBuscaUC());
 
         // Adiciona Imagem
 
@@ -154,7 +161,7 @@ public class BuscaUI extends Application {
 
         // Verifica se é Desenvolvedor e mostra botão adicionar
 
-        boolean isDesenvolvedor = buscaUC.isDesenvolvedor();
+        boolean isDesenvolvedor = getBuscaUC().isDesenvolvedor();
         if (isDesenvolvedor) {
             bAdicionar.setOnAction(event -> {
                 PublicarUI publicarUI = new PublicarUI();
@@ -182,7 +189,7 @@ public class BuscaUI extends Application {
 
         // Lista da Biblioteca
 
-        for (Jogo jogo : buscaUC.listarTodos()) {
+        for (Jogo jogo : getBuscaUC().listarTodos()) {
             if (jogo.getStatusAquicicao()) {
                 Button jogoBtn = new Button(jogo.getNome());
                 jogoBtn.setMaxWidth(Double.MAX_VALUE);
@@ -210,8 +217,8 @@ public class BuscaUI extends Application {
         // Ações
 
         fBusca.setPromptText("Digite o nome do jogo");
-        fBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
-//        bBusca.setOnAction((e) -> buscaUC.atualizarTabela(fBusca.getText(), jogosObservaveis));
+        fBusca.setOnAction((e) -> getBuscaUC().atualizarTabela(fBusca.getText(), jogosObservaveis));
+        //        bBusca.setOnAction((e) -> getBuscaUC().atualizarTabela(fBusca.getText(), jogosObservaveis));
         bJogo.setOnAction((e) -> new Alert(AlertType.ERROR, "Nossos Serviços Encontram-se Indisponíveis"));
 
         // Inicializar
@@ -222,9 +229,6 @@ public class BuscaUI extends Application {
     }
     
     private void atualizarBiblioteca(VBox vbM, BuscaUC buscaUC) {
-        // Limpar biblioteca anterior
-        vbM.getChildren().removeIf(node -> node instanceof Button);
-        
         // Recarregar biblioteca com jogos adquiridos
         for (Jogo jogo : buscaUC.listarTodos()) {
             if (jogo.getStatusAquicicao()) {

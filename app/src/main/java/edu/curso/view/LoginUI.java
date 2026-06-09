@@ -25,21 +25,36 @@ public class LoginUI extends Application {
     private TextField fNome = new TextField();
     private TextField fSenha = new TextField();
 
-    private Image imgSteam = new Image(getClass().getResourceAsStream("/img/SteamLogo.png"));
-
     private Label tNome = new Label("Usuário: ");
     private Label tSenha = new Label("Senha: ");
     private Label tCadastrar = new Label("Primeira Vez?");
 
     private Button bEntrar = new Button("Acessar");
 
-    private LoginUC loginUC = new LoginUC();
+    private LoginUC loginUC;
+    
+    private LoginUC getLoginUC() {
+        if (loginUC == null) {
+            loginUC = new LoginUC();
+        }
+        return loginUC;
+    }
 
     public void start(Stage stage){
+
+        System.out.println("========== LOGINUI INICIADO ==========");
 
         // Elementos Pane e Scene
         BorderPane bp = new BorderPane();
 
+        // Carregar imagem com tratamento de erro
+        Image imgSteam = null;
+        try {
+            imgSteam = new Image(getClass().getResourceAsStream("/img/SteamLogo.png"));
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar imagem: " + e.getMessage());
+        }
+        
         ImageView imageView = new ImageView(imgSteam);
 
         HBox hbN = new HBox(20);
@@ -101,12 +116,12 @@ public class LoginUI extends Application {
                 return;
             }
             
-            String resultado = loginUC.logar(nome, senha);
+            String resultado = getLoginUC().logar(nome, senha);
             System.out.println("Login attempt -> nome=" + nome + ", resultado=" + resultado);
 
             switch (resultado) {
                 case "LOGIN_OK":
-                    Usuario usuario = loginUC.autenticar(nome, senha);
+                    Usuario usuario = getLoginUC().autenticar(nome, senha);
                     System.out.println("autenticar() returned: " + usuario);
                     if (usuario != null) {
                         BuscaUC.mostrarBusca(new Stage(), usuario);
@@ -146,7 +161,9 @@ public class LoginUI extends Application {
 
         //Inicia
         stage.setScene(sc);
+        stage.setTitle("Login - Sistema de Jogos");
         stage.show();
+        System.out.println("========== JANELA DE LOGIN EXIBIDA ==========");
 
     }
 

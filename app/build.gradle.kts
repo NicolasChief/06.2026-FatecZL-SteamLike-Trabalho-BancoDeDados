@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("org.openjfx.javafxplugin") version "0.0.14"
 }
 
 repositories {
@@ -25,6 +26,11 @@ dependencies {
     implementation("com.microsoft.sqlserver:mssql-jdbc:11.2.2.jre17")
 }
 
+javafx {
+    version = "21"
+    modules = listOf("javafx.controls", "javafx.fxml")
+}
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
@@ -34,7 +40,20 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "edu.curso.Main"
+    mainClass.set("edu.curso.Main")
+}
+
+tasks.jar {
+    manifest {
+        attributes(mapOf("Main-Class" to application.mainClass.get()))
+    }
+    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith(".jar") }.map { zipTree(it) }
+    }) {
+        exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.EC", "META-INF/*.MF", "META-INF/INDEX.LIST")
+    }
+    exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.EC", "META-INF/*.MF", "META-INF/INDEX.LIST")
 }
 
 sourceSets {

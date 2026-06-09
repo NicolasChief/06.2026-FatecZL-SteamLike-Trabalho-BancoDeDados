@@ -13,10 +13,10 @@ import edu.curso.model.Pedido;
 public class PedidoDAOImpl  implements PedidoDAO {
 
 private static final String[] DB_URLS = {
-        "jdbc:sqlserver://NOTEBOFFO:51075;databaseName=Jogo;encrypt=false;trustServerCertificate=true",
-        "jdbc:sqlserver://localhost:1433;databaseName=Jogo;encrypt=false;trustServerCertificate=true",
-        "jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=Jogo;encrypt=false;trustServerCertificate=true",
-        "jdbc:sqlserver://localhost;instanceName=EXPRESS;databaseName=Jogo;encrypt=false;trustServerCertificate=true"
+        "jdbc:sqlserver://NOTEBOFFO:51075;databaseName=Jogo;encrypt=false;trustServerCertificate=true;loginTimeout=3;connectionTimeout=3",
+        "jdbc:sqlserver://localhost:1433;databaseName=Jogo;encrypt=false;trustServerCertificate=true;loginTimeout=3;connectionTimeout=3",
+        "jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=Jogo;encrypt=false;trustServerCertificate=true;loginTimeout=3;connectionTimeout=3",
+        "jdbc:sqlserver://localhost;instanceName=EXPRESS;databaseName=Jogo;encrypt=false;trustServerCertificate=true;loginTimeout=3;connectionTimeout=3"
     };
 
     private static final String DB_USER = "Admin";
